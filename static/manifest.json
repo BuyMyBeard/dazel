@@ -24,7 +24,7 @@
         {
             "name": "tilesets",
             "assets": {
-                "plain tileset": "maps/tilesets/plain-tileset.json"
+                "plain_tileset": "maps/tilesets/plain-tileset.json"
             }
         }
     ]

@@ -33,14 +33,14 @@ await Assets.init({ manifest: "manifest.json" });
 const mapAssets = await Assets.loadBundle("maps");
 const fontAssets = await Assets.loadBundle("fonts");
 const textureAssets = await Assets.loadBundle("textures");
+const tilesetAssets = await Assets.loadBundle("tilesets");
 
 
-const desertSheet = await Assets.load('textures/desert.png');
-const textureArray = generateTextures(desertSheet, TILE_RESOLUTION, 40, 8);
+const Plain_Tileset = generateTextures(tilesetAssets.plain_tileset, TILE_RESOLUTION, 160, 8);
 
 
 
-const map = new Map(mapAssets.map4, textureArray);
+const map = new Map(mapAssets.map1, Plain_Tileset);
 map.draw(app, TILE_RESOLUTION, SCALE_MULTIPLIER);
 
 app.ticker.add(delta => updateLoop(delta));
