@@ -33,22 +33,20 @@ await Assets.init({ manifest: "manifest.json" });
 const mapAssets = await Assets.loadBundle("maps");
 const fontAssets = await Assets.loadBundle("fonts");
 const textureAssets = await Assets.loadBundle("textures");
-const tilesetAssets = await Assets.loadBundle("tilesets");
+await Assets.loadBundle("tilesets");
 
-
-const Plain_Tileset = generateTextures(tilesetAssets.plain_tileset, TILE_RESOLUTION, 160, 8);
-
-
-
-const map = new Map(mapAssets.map1, Plain_Tileset);
+let map = new Map(mapAssets.map2, "plain-tileset");
 map.draw(app, TILE_RESOLUTION, SCALE_MULTIPLIER);
 
-app.ticker.add(delta => updateLoop(delta));
+
+//const Plain_Tileset = generateTextures(tilesetAssets.plain_tileset, TILE_RESOLUTION, 160, 8);
+
+//map.draw(app, TILE_RESOLUTION, SCALE_MULTIPLIER);
+
 
 
 
 const dazelArray: Array<Texture> = generateTextures(textureAssets.dazel, TILE_RESOLUTION, 9, 9);
-
 const dazelAnimation: Animations = {
   frontWalk: dazelArray.slice(0, 4),
   frontAttack: dazelArray.slice(4, 8)
@@ -57,6 +55,7 @@ const dazelAnimation: Animations = {
 const dazel = new Player(dazelAnimation, new Vect2D(30, 30))
 dazel.init(app);
 
+app.ticker.add(delta => updateLoop(delta));
 function updateLoop(_: number) {
   dazel.update();
 }

@@ -4,9 +4,14 @@ export class Map {
   private tileMap : number[][];
   public readonly width : number;
   public readonly height : number;
-  private readonly tileset : Array<Texture>;
+  private readonly tileset : String;
 
-  public constructor(mapFile : string, tileset : Array<Texture>) {
+  /**
+   * 
+   * @param map loaded asset
+   * @param tileset name of tileset in assets (without the extension)
+   */
+  public constructor(mapFile : string, tileset : String) {
     this.tileMap = this.generateTileMap(mapFile)
     this.width = this.tileMap[0].length;
     this.height = this.tileMap.length;
@@ -45,7 +50,7 @@ export class Map {
     for (let i = 0; i < this.tileMap.length; i++) {
       for (let j = 0; j < this.tileMap[0].length; j++) {
         let id = this.tileMap[i][j];
-        const sprite : Sprite = new Sprite(this.tileset[id]);
+        const sprite : Sprite = Sprite.from(this.tileset + id.toString() + ".png");
         sprite.position.set(tileRes * scale * j, tileRes * scale * i);
         sprite.scale.set(scale);
         app.stage.addChild(sprite);
