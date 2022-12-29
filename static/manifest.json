@@ -19,13 +19,13 @@
             "name": "textures",
             "assets": {
                 "dazel": "textures/dazel.png",
-                "plain tileset": "textures/tilesets/plain-tileset.bmp"
+                "plain_tileset": "textures/tilesets/plain-tileset.png"
             }
         },
         {
             "name": "tilesets",
             "assets": {
-                "plain tileset": "maps/tilesets/plain-tileset.json"
+                "plain_tileset": "maps/tilesets/plain-tileset.json"
             }
         }
     ]
