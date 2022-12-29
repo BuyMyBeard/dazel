@@ -6,24 +6,24 @@ export class KeysPressed {
   public Attack : Boolean = false;
   public Interact : Boolean = false;
   public Pause : Boolean = false;
+  public get None() {
+    return !this.any();
+  }
+  
 
   public reset() {
-    this.Up = false;
-    this.Down = false;
-    this.Left = false;
-    this.Right = false;
-    this.Attack = false;
-    this.Interact = false;
-    this.Pause = false;
+    Object.values(this).some(val => val = false)
   }
   public any() : Boolean {
     return this.Up || this.Down || this.Left || this.Right || this.Attack || this.Interact || this.Pause;
   }
 }
 
-export class InputReader {
+export type inputTypes = "Up" | "Down" | "Left" | "Right" | "Attack" | "Interact" | "Pause" | "None" ;
 
-    
+
+export class InputReader {
+ 
   public static keysPressed : KeysPressed = new KeysPressed(); //à clear à chaque loop cycle. Permet de savoir ce qui a été appuyé entre 2 frames;
 
   public static initialize() {
@@ -31,76 +31,94 @@ export class InputReader {
     document.addEventListener('keyup', this.onKeyUp);
   }
 
+  public static currentInput : inputTypes = 'None';
+
   public static onKeyDown(e : any) {
+    let inputType : inputTypes = 'None';
     switch (e.key) {
       case 'w':
       case 'ArrowUp':
-        InputReader.keysPressed.Up = true;
+        inputType = "Up";
         break;
   
       case 'a':
       case 'ArrowLeft':
-        InputReader.keysPressed.Left = true;
+        inputType = "Left";
         break;
   
       case 'd':
       case 'ArrowRight':
-        InputReader.keysPressed.Right = true;
+        inputType = "Right";
         break;
   
       case 's':
       case 'ArrowDown':
-        InputReader.keysPressed.Down = true;
+        inputType = "Down";
         break;
   
       case 'p':
       case 'Escape':
-        InputReader.keysPressed.Pause = true;
+        inputType = "Pause";
         break;
   
       case 'e':
       case ' ':
-        InputReader.keysPressed.Attack = true;
-        break;
+        inputType = "Attack";
+        break; //add interact
   
       default:
-        break;
+        return;
+      
     }
+    console.log(inputType);
+    console.log(InputReader.keysPressed)
+    if (!InputReader.keysPressed[inputType]) {
+      InputReader.currentInput = inputType;
+      InputReader.keysPressed[inputType] = true;
+    }
+    
   }
   public static onKeyUp(e : any) {
+    let inputType : inputTypes = 'None';
     switch (e.key) {
       case 'w':
       case 'ArrowUp':
-        InputReader.keysPressed.Up = false;
+        inputType = "Up";
         break;
   
       case 'a':
       case 'ArrowLeft':
-        InputReader.keysPressed.Left = false;
+        inputType = "Left";
         break;
   
       case 'd':
       case 'ArrowRight':
-        InputReader.keysPressed.Right = false;
+        inputType = "Right";
         break;
   
       case 's':
       case 'ArrowDown':
-        InputReader.keysPressed.Down = false;
+        inputType = "Down";
         break;
   
       case 'p':
       case 'Escape':
-        InputReader.keysPressed.Pause = false;
+        inputType = "Pause";
         break;
   
       case 'e':
       case ' ':
-        InputReader.keysPressed.Attack = false;
-        break;
+        inputType = "Attack";
+        break; //add interact
   
       default:
-        break;
+        return;
+    }
+    if (inputType === InputReader.currentInput) {
+      InputReader.currentInput = 'None';
+    }
+    if (InputReader.keysPressed[inputType]) {
+      InputReader.keysPressed[inputType] = false;
     }
   }
 }

@@ -1,6 +1,6 @@
 import { AnimatedSprite, IPoint, Sprite, Texture, Application} from "pixi.js";
 import { Vect2D } from "./Vect2D";
-import { KeysPressed } from "./InputReader";
+import { InputReader, KeysPressed } from "./InputReader";
 
 /** 
  * Represent anything that has a position and a sprite and is not bound to the tileset
@@ -58,37 +58,30 @@ export class Player extends Character {
     super(animations, position, hp, speed)
   }
   
-  public update(keysPressed : KeysPressed) {
+  public update() {
 
     let movement : Vect2D = Vect2D.zero();
-    
+    switch (InputReader.currentInput) {
+      case "Up":
+        movement.add(Vect2D.up());
+        break;
+      
+      case "Down":
+        movement.add(Vect2D.down());
+        break;
 
-    if (keysPressed.Down) {
-      movement.add(Vect2D.down());
+      case "Left":
+        movement.add(Vect2D.left());
+        break;
+
+      case "Right":
+        movement.add(Vect2D.right());
+        break;
     }
-    if (keysPressed.Up) {
-      movement.add(Vect2D.up());
-    }
-    if (keysPressed.Left) {
-      movement.add(Vect2D.left());
-    }
-    if (keysPressed.Right) {
-      movement.add(Vect2D.right());
-    }
+
     movement.adjustDiagonal();
     movement.multiply(this.speed);
     this.move(movement);
-
-
-    if (keysPressed.Attack && this.state !== "frontAttack") {
-      (this.sprite as AnimatedSprite).textures = this.animations.frontAttack;
-      this.state = "frontAttack";
-    }
-    if (keysPressed.Down) {
-      (this.sprite as AnimatedSprite).textures = this.animations.frontWalk;
-      this.state = "frontWalk";
-    }
-    (this.sprite as AnimatedSprite).play();
   }
 }
 

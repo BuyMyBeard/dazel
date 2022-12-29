@@ -4,7 +4,7 @@ import { AnimatedSprite, Application, Assets, SCALE_MODES, settings, Sprite, Spr
 import { Map } from "./Map";
 import { Animations, Player } from "./Entity";
 import { generateTextures} from "./functions";
-import { InputReader } from './InputReader';
+import { InputReader, inputTypes, KeysPressed } from './InputReader';
 import { Vect2D } from './Vect2D';
 
 
@@ -58,7 +58,6 @@ const dazel = new Player(dazelAnimation, new Vect2D(30,30))
 dazel.init(app);
 
 function updateLoop(_: number) {
-  dazel.update(InputReader.keysPressed);
+  dazel.update();
 }
-
 
