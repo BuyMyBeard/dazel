@@ -1,9 +1,8 @@
 {
-    "bundles":[
+    "bundles": [
         {
-            "name":"maps",
-            "assets":
-            {
+            "name": "maps",
+            "assets": {
                 "map1": "maps/map1.txt",
                 "map2": "maps/map2.txt",
                 "map3": "maps/map3.txt",
@@ -11,21 +10,23 @@
             }
         },
         {
-            "name":"fonts",
-            "assets":
-            {
-                "debug":"fonts/debug.json"
+            "name": "fonts",
+            "assets": {
+                "debug": "fonts/debug.json"
             }
-            
         },
         {
-            "name":"textures",
-            "assets":
-            {
-                "desert": "textures/desert.json",
-                "dazel": "textures/dazel.png"
-                
+            "name": "textures",
+            "assets": {
+                "dazel": "textures/dazel.png",
+                "plain tileset": "textures/tilesets/plain-tileset.bmp"
+            }
+        },
+        {
+            "name": "tilesets",
+            "assets": {
+                "plain tileset": "maps/tilesets/plain-tileset.json"
             }
         }
     ]
- }
+}
