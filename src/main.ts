@@ -1,14 +1,15 @@
 
 
-import { Application, Assets, SCALE_MODES, settings } from 'pixi.js';
+import { AnimatedSprite, Application, Assets, SCALE_MODES, settings, Sprite, Spritesheet, Texture } from 'pixi.js';
 import { Map } from "./Map";
-import type { Animations } from "./Entity";
-import { updateLoop, generateTextures} from "./functions";
+import { Animations, Player } from "./Entity";
+import { generateTextures} from "./functions";
 import { InputReader } from './InputReader';
+import { Vect2D } from './Vect2D';
 
 
 const TILE_RESOLUTION = 16; //textures are 16 by 16
-const SCALE_MULTIPLIER = 1;
+const SCALE_MULTIPLIER = 2;
 const STAGE_WIDTH = 16 * TILE_RESOLUTION * SCALE_MULTIPLIER;
 const STAGE_HEIGHT = 11 * TILE_RESOLUTION * SCALE_MULTIPLIER;
 
@@ -37,19 +38,27 @@ const textureAssets = await Assets.loadBundle("textures");
 const desertSheet = await Assets.load('textures/desert.png');
 const textureArray = generateTextures(desertSheet, TILE_RESOLUTION, 40, 8);
 
+
+
 const map = new Map(mapAssets.map4, textureArray);
 map.draw(app, TILE_RESOLUTION, SCALE_MULTIPLIER);
-map.displayDebug();
 
 app.ticker.add(delta => updateLoop(delta));
 
-const dazelSheet = await Assets.load('textures/dazel-front.png');
-const dazelTextureArray = generateTextures(dazelSheet, TILE_RESOLUTION, 9, 9);
 
 
-let animations : Animations = {
-  frontWalk : dazelTextureArray.slice(0, 4),
-  frontAttack : dazelTextureArray.slice(4),
-};
+const dazelArray: Array<Texture> = generateTextures(textureAssets.dazel, TILE_RESOLUTION, 9, 9);
 
-console.log(animations);
+const dazelAnimation : Animations = {
+  frontWalk : dazelArray.slice(0, 4),
+  frontAttack : dazelArray.slice(4, 8)
+}
+
+const dazel = new Player(dazelAnimation, new Vect2D(30,30))
+dazel.init(app);
+
+function updateLoop(_: number) {
+  dazel.update(InputReader.keysPressed);
+}
+
+

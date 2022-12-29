@@ -1,12 +1,7 @@
 
 import { BaseTexture, Texture, Rectangle } from "pixi.js";
-import { InputReader } from "./InputReader";
 
 
-
-export function updateLoop(_: number) {
-  InputReader.getKeysPressed();
-}
 
 export function generateTextures(baseTexture : BaseTexture, resolution : number, spriteCount : number, tilesPerRow : number) {
 

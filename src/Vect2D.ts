@@ -20,8 +20,20 @@ export class Vect2D implements IPoint {
   }
 
 
-  public static zero() {
+  public static zero() : Vect2D{
     return new Vect2D(0, 0);
+  }
+  public static up() : Vect2D {
+    return new Vect2D(0, -1);
+  }
+  public static down() : Vect2D {
+    return new Vect2D(0, 1);
+  }
+  public static left() : Vect2D {
+    return new Vect2D(-1, 0);
+  }
+  public static right() : Vect2D {
+    return new Vect2D(1, 0);
   }
 
   public set(x : number = 0, y : number = x) {
@@ -29,7 +41,27 @@ export class Vect2D implements IPoint {
     this.y = y;
   }
 
-  public equals(vect2D : Vect2D) : boolean {
+  public equals(vect2D : IPoint) : boolean {
     return this.x === vect2D.x && this.y === vect2D.y;
+  }
+
+  public add(vect2D : IPoint) : IPoint {
+    this.x += vect2D.x;
+    this.y += vect2D.y;
+    return this;
+  }
+
+  public adjustDiagonal() {
+    if (this.x == 0 || this.y == 0)
+      return;
+    const SIN45DEGREE = 0.70710678118654752440084436210485; //because divisions and roots are bad on cpu
+    this.x *= SIN45DEGREE;
+    this.y *= SIN45DEGREE;
+  }
+  
+  public multiply(scalar : number) : IPoint {
+    this.x *= scalar;
+    this.y *= scalar;
+    return this;
   }
 }

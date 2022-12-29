@@ -22,7 +22,9 @@
             "name":"textures",
             "assets":
             {
-                "desert": "textures/desert.json"
+                "desert": "textures/desert.json",
+                "dazel": "textures/dazel.png"
+                
             }
         }
     ]
