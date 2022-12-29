@@ -18,8 +18,7 @@
         {
             "name": "textures",
             "assets": {
-                "dazel": "textures/dazel.png",
-                "plain tileset": "textures/tilesets/plain-tileset.bmp"
+                "dazel": "textures/dazel.png"
             }
         },
         {
