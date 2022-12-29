@@ -77,9 +77,17 @@ export class Player extends Character {
       case "Right":
         movement.add(Vect2D.right());
         break;
+
+      case "Attack":
+        //attack
+        break;
+
+      case "Interact":
+        //interact
+        break;
     }
 
-    movement.adjustDiagonal();
+    //movement.adjustDiagonal();
     movement.multiply(this.speed);
     this.move(movement);
   }
