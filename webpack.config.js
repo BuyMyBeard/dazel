@@ -6,8 +6,12 @@ const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = (env, argv) => {
     return ({
+        experiments: {
+            topLevelAwait: true,
+        },
+
         stats: 'minimal', // Keep console output easy to read.
-        entry: './src/index.ts', // Your program entry point
+        entry: './src/main.ts', // Your program entry point
 
         // Your build destination
         output: {

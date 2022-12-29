@@ -1,0 +1,29 @@
+{
+    "bundles":[
+        {
+            "name":"maps",
+            "assets":
+            {
+                "map1": "maps/map1.txt",
+                "map2": "maps/map2.txt",
+                "map3": "maps/map3.txt",
+                "map4": "maps/map4.txt"
+            }
+        },
+        {
+            "name":"fonts",
+            "assets":
+            {
+                "debug":"fonts/debug.json"
+            }
+            
+        },
+        {
+            "name":"textures",
+            "assets":
+            {
+                "desert": "textures/desert.json"
+            }
+        }
+    ]
+ }
