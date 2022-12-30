@@ -140,7 +140,7 @@ export class Player extends Character {
   constructor(app : Application, animations : Animations, position : IPoint = new Vect2D, hp : number = 3, speed : number = 2) {
     super(app, animations, position, hp, speed)
     this.init();
-    this.sprite.anchor.set(0.5, 1);
+    this.sprite.anchor.set(0.5, 0.9);
   }
   
   public update() {

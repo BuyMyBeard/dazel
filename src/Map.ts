@@ -8,6 +8,7 @@ export type CardinalDirection = "North" | "South" | "East" | "West";
 export class Map implements IPositionWatcher {
   private tileMap : number[][];
   private collisionMap : CollisionMap = new CollisionMap;
+  public collisionSpecifications : Array<[number, TypeCollision]> = [];
 
   public readonly width : number;
   public readonly height : number;
@@ -68,8 +69,7 @@ export class Map implements IPositionWatcher {
     }
     this.active = false;
     let content = this.app.stage.removeChildren();
-    map.draw();
-
+    map.draw(this.collisionSpecifications);
   }
 
   private generateTileMap(mapFile : string) : number[][] {
@@ -102,7 +102,10 @@ export class Map implements IPositionWatcher {
   }
 
   public draw(collisionSpecifications : Array<[number, TypeCollision]> = []) {
-    let fillCollisionMap : boolean = this.collisionMap.empty() && collisionSpecifications.length != 0;
+    if (collisionSpecifications.length != 0) {
+      this.collisionSpecifications = collisionSpecifications;
+    }
+    let fillCollisionMap : boolean = this.collisionMap.empty() && this.collisionSpecifications.length != 0;
     this.active = true;
     for (let i = 0; i < this.tileMap.length; i++) {
       for (let j = 0; j < this.tileMap[0].length; j++) {
@@ -170,22 +173,22 @@ class CollisionMap {
       case "BottomLeftTriangle":
         return position.x >= x0
             && position.y <= y1
-            && this.isAbove(position, x0y0, x1y1) <= 0;      
+            && this.compare(position, x0y0, x1y1) >= 0;      
 
       case "BottomRightTriangle":
         return position.x <= x1
             && position.y <= y1
-            && this.isAbove(position, x0y1, x1y0) <= 0;;
+            && this.compare(position, x0y1, x1y0) >= 0;;
 
       case "TopLeftTriangle":
         return position.x >= x0
             && position.y >= y0
-            && this.isAbove(position, x0y1, x1y0) >= 0;
+            && this.compare(position, x0y1, x1y0) <= 0;
 
       case "TopRightTriangle":
         return position.x <= x1
             && position.y >= y0
-            && this.isAbove(position, x0y0, x1y1) >= 0;
+            && this.compare(position, x0y0, x1y1) <= 0;
     }
   }
   /**
@@ -193,9 +196,9 @@ class CollisionMap {
    * @param point point to check
    * @param linePoint1 first point of line
    * @param linePoint2 second point of line
-   * @returns 0 if on line, > 0 if above line and < 0 if under
+   * @returns 0 if on line, > 0 if under line and < 0 if above
    */
-  public isAbove(point : IPoint, linePoint1 : IPoint, linePoint2 : IPoint) : number {
+  public compare(point : IPoint, linePoint1 : IPoint, linePoint2 : IPoint) : number {
     return (linePoint2.x - linePoint1.x)*(point.y - linePoint1.y) - (linePoint2.y - linePoint1.y)*(point.x - linePoint1.x);
   }
 }

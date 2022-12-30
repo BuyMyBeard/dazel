@@ -1,7 +1,7 @@
 
 
 import { Text, Application, Assets, SCALE_MODES, settings, Graphics, GraphicsGeometry } from 'pixi.js';
-import { Map } from "./Map";
+import { Map, TypeCollision } from "./Map";
 import { Animations, Player } from "./Entity";
 import { getTextureArray } from "./functions";
 import { InputReader} from './InputReader';
@@ -62,7 +62,7 @@ const dazelAnimation: Animations = {
 }
 
 
-const dazel = new Player(app, dazelAnimation, new Vect2D(30, 30))
+const dazel = new Player(app, dazelAnimation, new Vect2D(200, 200))
 const maps : { [id: string] : Map} = {
   map1 : new Map(mapAssets.map1, "plain-tileset", app),
   map2 : new Map(mapAssets.map2, "plain-tileset", app),
@@ -74,7 +74,21 @@ Object.values(maps).forEach((map : Map) => {
 
 maps.map1.North = maps.map2;
 maps.map2.South = maps.map1;
-maps.map1.draw();
+
+const collisionSpecifications : Array<[number, TypeCollision]> = [
+  [14, "Square"],
+  [22, "Square"],
+  [49, "Square"],
+  [50, "Square"],
+  [54, "Square"],
+  [21, "TopRightTriangle"],
+  [15, "BottomLeftTriangle"],
+  [23, "TopLeftTriangle"],
+  [52, "BottomLeftTriangle"],
+  [13, "BottomRightTriangle"],
+]
+
+maps.map1.draw(collisionSpecifications);
 
 
 
