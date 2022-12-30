@@ -75,7 +75,7 @@ const dazel = new Player(app, dazelAnimation, new Vect2D(30, 30))
 const debugBackground : Graphics = new Graphics();
 
 debugBackground.beginFill(0x222222);
-debugBackground.drawRect(0,0, STAGE_WIDTH, 70);
+debugBackground.drawRect(0,0, 150, 70);
 debugBackground.endFill();
 debugBackground.alpha = 0.5;
 app.stage.addChild(debugBackground);
@@ -86,7 +86,7 @@ let direction = dazel.Direction;
 
 const stateDebug = new Text("dazel.State : " + state, fontAssets.debug);
 const directionDebug = new Text("dazel.Direction : " + direction, fontAssets.debug);
-directionDebug.position.set(0, 40);
+directionDebug.position.set(0, 12);
 app.stage.addChild(stateDebug);
 app.stage.addChild(directionDebug);
 
