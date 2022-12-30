@@ -1,7 +1,8 @@
 import { AnimatedSprite, IPoint, Sprite, Texture, Application} from "pixi.js";
 import { Vect2D } from "./Vect2D";
-import { InputReader, KeysPressed } from "./InputReader";
-import { IPositionWatcher } from "./Map";
+import { InputReader } from "./InputReader";
+import { IPositionWatcher, CardinalDirection } from "./Map";
+import * as C from "./Constants";
 
 /** 
  * Represent anything that has a position and a sprite and is not bound to the tileset
@@ -19,7 +20,7 @@ export abstract class Entity {
   }
   protected warnSubs() {
     for (let sub of this.subs) {
-      sub.warn(this.position);
+      sub.warn(this);
     }
   }
 
@@ -33,13 +34,14 @@ export abstract class Entity {
   public get position()  {
     return this.sprite.position;
   }
-  public set position(pos : IPoint) {
+  protected set position(pos : IPoint) {
     this.sprite.position = pos;
   }
 
   public move(movement : IPoint) {
     this.position = (movement as Vect2D).add(this.position);
-
+    this.warnSubs();
+    
   }
 
   constructor(app : Application, sprite : Sprite, position : IPoint) {
@@ -108,9 +110,30 @@ export abstract class Character extends Entity {
 
 export class Player extends Character {
   
+  changeMap(app : Application, cardinalDirection : CardinalDirection) {
+    this.moveToTop(app);
+    switch (cardinalDirection) {
+      case "East":
+        this.position.x = 10;
+        break;
+
+      case "West":
+        this.position.x = C.STAGE_WIDTH - 10;
+        break;
+
+      case "North":
+        this.position.y = C.STAGE_HEIGHT - 5;
+        break;
+
+      case "South":
+        this.position.y = 30;
+    }
+  }
+  
   constructor(app : Application, animations : Animations, position : IPoint = new Vect2D, hp : number = 3, speed : number = 2) {
     super(app, animations, position, hp, speed)
     this.init();
+    this.sprite.anchor.set(0.5, 1);
   }
   
   public update() {

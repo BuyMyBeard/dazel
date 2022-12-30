@@ -62,12 +62,19 @@ const dazelAnimation: Animations = {
 }
 
 
-
 const dazel = new Player(app, dazelAnimation, new Vect2D(30, 30))
+const maps : { [id: string] : Map} = {
+  map1 : new Map(mapAssets.map1, "plain-tileset", app),
+  map2 : new Map(mapAssets.map2, "plain-tileset", app),
+}
 
-const map1 = new Map(mapAssets.map2, "plain-tileset", app);
+Object.values(maps).forEach((map : Map) => {
+  dazel.subscribe(map);
+})
 
-map1.draw();
+maps.map1.North = maps.map2;
+maps.map2.South = maps.map1;
+maps.map1.draw();
 
 
 

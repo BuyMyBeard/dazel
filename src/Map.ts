@@ -1,18 +1,22 @@
 import { Application, Sprite, IPoint } from "pixi.js";
 import * as C from "./Constants";
+import { Entity, Player} from "./Entity";
+
+export type CardinalDirection = "North" | "South" | "East" | "West";
 
 export class Map implements IPositionWatcher {
   private tileMap : number[][];
   public readonly width : number;
   public readonly height : number;
   private readonly tileset : String;
-  
+  private active : boolean = false;
+
   private app : Application;
 
-  public north : Map | null = null;
-  public south : Map | null = null;
-  public east : Map | null = null;
-  public west : Map | null = null;
+  public North : Map | null = null;
+  public South : Map | null = null;
+  public East : Map | null = null;
+  public West : Map | null = null;
 
   /**
    * 
@@ -26,16 +30,25 @@ export class Map implements IPositionWatcher {
     this.tileset = tileset;
     this.app = app;
   }
-  warn(position: IPoint): void {
-    if (position.x < 0) {
-      this.loadNext(this.west);
-    } else if (position.x > C.STAGE_WIDTH) {
-      this.loadNext(this.east);
-    } else if (position.y < 0) {
-      this.loadNext(this.north);
-    } else if (position.y > C.STAGE_HEIGHT) {
-      this.loadNext(this.south);
+  warn(entity : Entity): void {
+    if (!this.active) {
+      return;
     }
+    let directionToLoad : CardinalDirection;
+    if (entity.position.x < 0) {
+      directionToLoad = "West";
+    } else if (entity.position.x > C.STAGE_WIDTH) {
+      directionToLoad = "East";
+    } else if (entity.position.y < 0) {
+      directionToLoad = "North";
+    } else if (entity.position.y > C.STAGE_HEIGHT) {
+      directionToLoad = "South";
+    } else {
+      return;
+    }
+    this.loadNext(this[directionToLoad]);
+    (entity as Player).changeMap(this.app, directionToLoad);
+    console.log(this[directionToLoad]);
   }
   private loadNext(map : Map | null) {
     if (map === null) {
@@ -75,6 +88,7 @@ export class Map implements IPositionWatcher {
   }
 
   public draw() {
+    this.active = true;
     for (let i = 0; i < this.tileMap.length; i++) {
       for (let j = 0; j < this.tileMap[0].length; j++) {
         let id = this.tileMap[i][j];
@@ -89,5 +103,5 @@ export class Map implements IPositionWatcher {
 }
 
 export interface IPositionWatcher {
-  warn(position : IPoint) : void;
+  warn(entity : Entity) : void;
 }
