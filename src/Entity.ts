@@ -63,7 +63,8 @@ export abstract class Entity {
 }
 export abstract class Character extends Entity {
   protected hp : number;
-  protected animations : Animations;
+  protected animations : Animations | undefined;
+  protected simpleAnimations : SimpleAnimations | undefined;
   protected speed : number;
 
   protected get animatedSprite() {
@@ -79,11 +80,13 @@ export abstract class Character extends Entity {
 
   protected init() { // to make more flexible
     let anim = (this.sprite as AnimatedSprite);
-    anim.play();
+    anim.play()
     anim.animationSpeed = 0.2;
     this.sprite.scale.set(4)
   }
-  protected updateAnimation() {
+  protected updateAnimation()  {
+    if (this.animations == undefined)
+      return;
     const directionalAnimation : DirectionalAnimation | null = this.animations[this.state];
     if (directionalAnimation === null) {
       console.log(`animation not valid \n state: ${this.state}  \n direction: ${this.direction}`);
@@ -112,6 +115,9 @@ export abstract class Character extends Entity {
     this.animatedSprite.loop = true;
     this.animatedSprite.onComplete = undefined;
     this.updateAnimation();
+  }
+  public static isSimpleAnimations(animations : Animations | SimpleAnimations) {
+    return (Object.keys(animations).length < 4);
   }
 }
 
@@ -205,6 +211,12 @@ export type Animations = {
   None: null,
 };
 
+export type AnimationPreset = "Simple" | "Directional";
+
+export type SimpleAnimations = {
+  Walk: Array<Texture>
+}
+
 export type DirectionalAnimation = {
   Up: Array<Texture>,
   Down: Array<Texture>,
@@ -212,3 +224,9 @@ export type DirectionalAnimation = {
   Right: Array<Texture>,
   None: null,
 };
+
+// export class Slime extends Character {
+//   public constructor() {
+//     super(app, animations,)
+//   }
+// }
