@@ -55,6 +55,8 @@ export abstract class Character extends Entity {
     this.sprite.scale.set(4)
   }
   protected updateAnimation() {
+    console.log(this.state);
+    console.log(this.direction);
     const directionalAnimation : DirectionalAnimation | null = this.animations[this.state];
     if (directionalAnimation === null) {
       console.log("animation not valid");
@@ -113,8 +115,8 @@ export class Player extends Character {
 
     if (direction != "None" && direction != this.direction) {
       this.direction = direction;
-      this.updateAnimation();
       this.state = "Walk";
+      this.updateAnimation();
     } else {
       this.state = "Idle";
     }
