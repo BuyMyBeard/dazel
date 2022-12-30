@@ -10,13 +10,21 @@ export class KeysPressed {
     return !this.any();
   }
   
+  public getAnyTrue() : inputTypes | boolean {
+    if (this.None) {
+      return false;
+    }
+    //return Object.keys(this).find(this => this.val)
+    return true;
+  }
 
   public reset() {
     Object.values(this).some(val => val = false)
   }
   public any() : Boolean {
-    return this.Up || this.Down || this.Left || this.Right || this.Attack || this.Interact || this.Pause;
+    return Object.values(this).some(val => val);
   }
+
 }
 
 export type inputTypes = "Up" | "Down" | "Left" | "Right" | "Attack" | "Interact" | "Pause" | "None" ;
@@ -112,11 +120,16 @@ export class InputReader {
       default:
         return;
     }
-    if (inputType === InputReader.currentInput) {
-      InputReader.currentInput = 'None';
-    }
     if (InputReader.keysPressed[inputType]) {
       InputReader.keysPressed[inputType] = false;
+    }
+    if (inputType === InputReader.currentInput) {
+      InputReader.currentInput = 'None';
+      // if (InputReader.keysPressed.None) {
+      //   InputReader.currentInput = 'None';
+      // } else {
+
+      // }
     }
   }
 }
