@@ -154,18 +154,6 @@ export class Player extends Character {
       
     }
   }
-  
-
-  // export type Animations = {
-//   frontWalk : Array<Texture>,
-//   frontAttack : Array<Texture>,
-//   backWalk : Array<Texture>,
-//   backAttack : Array<Texture>,
-//   leftWalk : Array<Texture>,
-//   leftAttack : Array<Texture>,
-//   rightWalk : Array<Texture>,
-//   rightAttack : Array<Texture>
-// };
 
 export type Animations = {
   Walk: DirectionalAnimation,

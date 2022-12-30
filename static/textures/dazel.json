@@ -297,16 +297,12 @@
   "scale": "1",
   "frameTags": [
    { "name": "front-walk", "from": 0, "to": 3, "direction": "forward" },
-   { "name": "front-idle", "from": 0, "to": 0, "direction": "forward" },
    { "name": "front-attack", "from": 4, "to": 8, "direction": "forward" },
    { "name": "back-walk", "from": 9, "to": 12, "direction": "forward" },
-   { "name": "back-idle", "from": 9, "to": 9, "direction": "forward" },
    { "name": "back-attack", "from": 13, "to": 17, "direction": "forward" },
    { "name": "right-walk", "from": 18, "to": 21, "direction": "forward" },
-   { "name": "right-idle", "from": 18, "to": 18, "direction": "forward" },
    { "name": "right-attack", "from": 22, "to": 26, "direction": "forward" },
    { "name": "left-walk", "from": 27, "to": 30, "direction": "forward" },
-   { "name": "left-idle", "from": 27, "to": 27, "direction": "forward" },
    { "name": "left-attack", "from": 31, "to": 35, "direction": "forward" }
   ],
   "layers": [
