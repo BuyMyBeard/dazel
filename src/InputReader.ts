@@ -69,11 +69,16 @@ export class InputReader {
         inputType = "Pause";
         break;
   
-      case 'e':
+      case 'Enter':
       case ' ':
         inputType = "Attack";
-        break; //add interact
-  
+        break;
+    
+      case 'e':
+      case 'Control':
+        inputType = "Interact";
+        break;
+        
       default:
         return;
       
@@ -112,10 +117,15 @@ export class InputReader {
         inputType = "Pause";
         break;
   
-      case 'e':
+      case 'Enter':
       case ' ':
         inputType = "Attack";
-        break; //add interact
+        break;
+
+      case 'e':
+      case 'Control':
+        inputType = "Interact";
+        break;
   
       default:
         return;
