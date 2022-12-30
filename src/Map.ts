@@ -54,8 +54,10 @@ export class Map implements IPositionWatcher {
     if (map === null) {
       throw "map not defined";
     }
+    this.active = false;
     this.app.stage.removeChildren();
     map.draw();
+
   }
 
   private generateTileMap(mapFile : string) : number[][] {
