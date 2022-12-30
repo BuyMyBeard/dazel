@@ -18,10 +18,14 @@ export abstract class Entity {
   public subscribe(watcher : IPositionWatcher) {
     this.subs.push(watcher);
   }
-  protected warnSubs() {
+  protected warnSubs(newPosition : IPoint) : boolean {
+    let collisionDetected : boolean = false;
     for (let sub of this.subs) {
-      sub.warn(this);
+      if (sub.warn(this, newPosition)) {
+        collisionDetected = true;
+      }
     }
+    return collisionDetected;
   }
 
   public get State() {
@@ -39,8 +43,11 @@ export abstract class Entity {
   }
 
   public move(movement : IPoint) {
-    this.position = (movement as Vect2D).add(this.position);
-    this.warnSubs();
+    let newPosition = (movement as Vect2D).add(this.position);
+    if (!this.warnSubs(newPosition)) {
+      this.position = newPosition;
+    }
+
     
   }
 

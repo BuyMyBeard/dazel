@@ -1,11 +1,14 @@
 import { Application, Sprite, IPoint } from "pixi.js";
 import * as C from "./Constants";
 import { Entity, Player} from "./Entity";
+import { Vect2D } from "./Vect2D";
 
 export type CardinalDirection = "North" | "South" | "East" | "West";
 
 export class Map implements IPositionWatcher {
   private tileMap : number[][];
+  private collisionMap : CollisionMap = new CollisionMap;
+
   public readonly width : number;
   public readonly height : number;
   private readonly tileset : String;
@@ -30,9 +33,17 @@ export class Map implements IPositionWatcher {
     this.tileset = tileset;
     this.app = app;
   }
-  warn(entity : Entity): void {
+  /**
+   * 
+   * @param entity entity to check position of
+   * @returns true if collision registered, false otherwise
+   */
+  warn(entity : Entity, newPosition : IPoint): boolean {
     if (!this.active) {
-      return;
+      return false;
+    }
+    if (this.collisionMap.checkCollision(newPosition)) {
+      return true;
     }
     let directionToLoad : CardinalDirection;
     if (entity.position.x < 0) {
@@ -44,18 +55,19 @@ export class Map implements IPositionWatcher {
     } else if (entity.position.y > C.STAGE_HEIGHT) {
       directionToLoad = "South";
     } else {
-      return;
+      return false;
     }
     this.loadNext(this[directionToLoad]);
     (entity as Player).changeMap(this.app, directionToLoad);
     console.log(this[directionToLoad]);
+    return true; //position will already get updated by changeMap method
   }
   private loadNext(map : Map | null) {
     if (map === null) {
       throw "map not defined";
     }
     this.active = false;
-    this.app.stage.removeChildren();
+    let content = this.app.stage.removeChildren();
     map.draw();
 
   }
@@ -89,15 +101,25 @@ export class Map implements IPositionWatcher {
     console.log("height : " + this.height);
   }
 
-  public draw() {
+  public draw(collisionSpecifications : Array<[number, TypeCollision]> = []) {
+    let fillCollisionMap : boolean = this.collisionMap.empty() && collisionSpecifications.length != 0;
     this.active = true;
     for (let i = 0; i < this.tileMap.length; i++) {
       for (let j = 0; j < this.tileMap[0].length; j++) {
         let id = this.tileMap[i][j];
         const sprite : Sprite = Sprite.from(this.tileset + id.toString() + ".png");
-        sprite.position.set(C.TILE_RESOLUTION * C.SCALE_MULTIPLIER * j, C.TILE_RESOLUTION * C.SCALE_MULTIPLIER * i);
+        const pos = new Vect2D(C.TILE_RESOLUTION * C.SCALE_MULTIPLIER * j, C.TILE_RESOLUTION * C.SCALE_MULTIPLIER * i);
+        sprite.position = pos;
         sprite.scale.set(C.SCALE_MULTIPLIER);
         this.app.stage.addChild(sprite);
+        if (fillCollisionMap) {
+          for (let tuple of collisionSpecifications) {
+            if (id == tuple[0]) {
+              this.collisionMap.addSolidTile(pos, tuple[1]);
+              break;
+            }
+          }
+        }
       }
     }
   }
@@ -105,5 +127,75 @@ export class Map implements IPositionWatcher {
 }
 
 export interface IPositionWatcher {
-  warn(entity : Entity) : void;
+  warn(entity : Entity, newPosition : IPoint) : boolean;
+}
+
+export type TypeCollision = "Square" | "TopLeftTriangle" | "TopRightTriangle" | "BottomLeftTriangle" | "BottomRightTriangle";
+class CollisionMap {
+  public empty() : boolean {
+    return this.solidTiles.length == 0;
+  }
+  public solidTiles : Array<[IPoint, TypeCollision]> = [];
+
+  public addSolidTile(position : IPoint, typeCollision : TypeCollision) {
+    this.solidTiles.push([position, typeCollision]);
+  }
+
+  public checkCollision(position : IPoint) : boolean {
+    for (const tile of this.solidTiles) {
+      if (this.isInsideTile(position, tile)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public isInsideTile(position : IPoint, tile : [IPoint, TypeCollision]) : boolean {
+    const x0y0 = tile[0];
+    const x1y0 = Vect2D.add(tile[0], new Vect2D(C.REAL_TILE_RESOLUTION, 0));
+    const x0y1 = Vect2D.add(tile[0], new Vect2D(0, C.REAL_TILE_RESOLUTION));
+    const x1y1 = Vect2D.add(tile[0], new Vect2D(C.REAL_TILE_RESOLUTION, C.REAL_TILE_RESOLUTION));
+    const x0 = x0y0.x;
+    const x1 = x1y0.x;
+    const y0 = x0y0.y;
+    const y1 = x0y1.y;
+
+    switch (tile[1]) {
+      case "Square":
+        return position.x >= x0
+            && position.y >= y0
+            && position.x <= x1
+            && position.y <= y1;
+
+      case "BottomLeftTriangle":
+        return position.x >= x0
+            && position.y <= y1
+            && this.isAbove(position, x0y0, x1y1) <= 0;      
+
+      case "BottomRightTriangle":
+        return position.x <= x1
+            && position.y <= y1
+            && this.isAbove(position, x0y1, x1y0) <= 0;;
+
+      case "TopLeftTriangle":
+        return position.x >= x0
+            && position.y >= y0
+            && this.isAbove(position, x0y1, x1y0) >= 0;
+
+      case "TopRightTriangle":
+        return position.x <= x1
+            && position.y >= y0
+            && this.isAbove(position, x0y0, x1y1) >= 0;
+    }
+  }
+  /**
+   * checks relation of point and line
+   * @param point point to check
+   * @param linePoint1 first point of line
+   * @param linePoint2 second point of line
+   * @returns 0 if on line, > 0 if above line and < 0 if under
+   */
+  public isAbove(point : IPoint, linePoint1 : IPoint, linePoint2 : IPoint) : number {
+    return (linePoint2.x - linePoint1.x)*(point.y - linePoint1.y) - (linePoint2.y - linePoint1.y)*(point.x - linePoint1.x);
+  }
 }

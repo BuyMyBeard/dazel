@@ -51,6 +51,10 @@ export class Vect2D implements IPoint {
     return this;
   }
 
+  public static add(vec1 : IPoint, vec2 : IPoint) {
+    return new Vect2D(vec1.x + vec2.x, vec1.y + vec2.y);
+  }
+
   public adjustDiagonal() {
     if (this.x == 0 || this.y == 0)
       return;
