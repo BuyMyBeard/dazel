@@ -1,6 +1,6 @@
 { "frames": {
    "dazel0.png": {
-    "frame": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "frame": { "x": 0, "y": 0, "w": 18, "h": 18 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -8,7 +8,7 @@
     "duration": 100
    },
    "dazel1.png": {
-    "frame": { "x": 16, "y": 0, "w": 16, "h": 16 },
+    "frame": { "x": 18, "y": 0, "w": 18, "h": 18 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -16,7 +16,7 @@
     "duration": 100
    },
    "dazel2.png": {
-    "frame": { "x": 32, "y": 0, "w": 16, "h": 16 },
+    "frame": { "x": 36, "y": 0, "w": 18, "h": 18 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -24,7 +24,7 @@
     "duration": 100
    },
    "dazel3.png": {
-    "frame": { "x": 48, "y": 0, "w": 16, "h": 16 },
+    "frame": { "x": 54, "y": 0, "w": 18, "h": 18 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -32,7 +32,7 @@
     "duration": 100
    },
    "dazel4.png": {
-    "frame": { "x": 64, "y": 0, "w": 16, "h": 16 },
+    "frame": { "x": 72, "y": 0, "w": 18, "h": 18 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -40,7 +40,7 @@
     "duration": 100
    },
    "dazel5.png": {
-    "frame": { "x": 80, "y": 0, "w": 16, "h": 16 },
+    "frame": { "x": 90, "y": 0, "w": 18, "h": 18 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -48,7 +48,7 @@
     "duration": 100
    },
    "dazel6.png": {
-    "frame": { "x": 0, "y": 16, "w": 16, "h": 16 },
+    "frame": { "x": 0, "y": 18, "w": 18, "h": 18 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -56,7 +56,7 @@
     "duration": 100
    },
    "dazel7.png": {
-    "frame": { "x": 16, "y": 16, "w": 16, "h": 16 },
+    "frame": { "x": 18, "y": 18, "w": 18, "h": 18 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -64,7 +64,7 @@
     "duration": 100
    },
    "dazel8.png": {
-    "frame": { "x": 32, "y": 16, "w": 16, "h": 16 },
+    "frame": { "x": 36, "y": 18, "w": 18, "h": 18 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -72,7 +72,7 @@
     "duration": 100
    },
    "dazel9.png": {
-    "frame": { "x": 48, "y": 16, "w": 16, "h": 16 },
+    "frame": { "x": 54, "y": 18, "w": 18, "h": 18 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -80,7 +80,7 @@
     "duration": 100
    },
    "dazel10.png": {
-    "frame": { "x": 64, "y": 16, "w": 16, "h": 16 },
+    "frame": { "x": 72, "y": 18, "w": 18, "h": 18 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -88,7 +88,7 @@
     "duration": 100
    },
    "dazel11.png": {
-    "frame": { "x": 80, "y": 16, "w": 16, "h": 16 },
+    "frame": { "x": 90, "y": 18, "w": 18, "h": 18 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -96,7 +96,7 @@
     "duration": 100
    },
    "dazel12.png": {
-    "frame": { "x": 0, "y": 32, "w": 16, "h": 16 },
+    "frame": { "x": 0, "y": 36, "w": 18, "h": 18 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -104,7 +104,7 @@
     "duration": 100
    },
    "dazel13.png": {
-    "frame": { "x": 16, "y": 32, "w": 16, "h": 16 },
+    "frame": { "x": 18, "y": 36, "w": 18, "h": 18 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -112,7 +112,7 @@
     "duration": 100
    },
    "dazel14.png": {
-    "frame": { "x": 32, "y": 32, "w": 16, "h": 16 },
+    "frame": { "x": 36, "y": 36, "w": 18, "h": 18 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -120,7 +120,7 @@
     "duration": 100
    },
    "dazel15.png": {
-    "frame": { "x": 48, "y": 32, "w": 16, "h": 16 },
+    "frame": { "x": 54, "y": 36, "w": 18, "h": 18 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -128,7 +128,7 @@
     "duration": 100
    },
    "dazel16.png": {
-    "frame": { "x": 64, "y": 32, "w": 16, "h": 16 },
+    "frame": { "x": 72, "y": 36, "w": 18, "h": 18 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -136,7 +136,7 @@
     "duration": 100
    },
    "dazel17.png": {
-    "frame": { "x": 80, "y": 32, "w": 16, "h": 16 },
+    "frame": { "x": 90, "y": 36, "w": 18, "h": 18 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -144,7 +144,7 @@
     "duration": 100
    },
    "dazel18.png": {
-    "frame": { "x": 0, "y": 48, "w": 16, "h": 16 },
+    "frame": { "x": 0, "y": 54, "w": 18, "h": 18 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -152,7 +152,7 @@
     "duration": 100
    },
    "dazel19.png": {
-    "frame": { "x": 16, "y": 48, "w": 16, "h": 16 },
+    "frame": { "x": 18, "y": 54, "w": 18, "h": 18 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -160,7 +160,7 @@
     "duration": 100
    },
    "dazel20.png": {
-    "frame": { "x": 32, "y": 48, "w": 16, "h": 16 },
+    "frame": { "x": 36, "y": 54, "w": 18, "h": 18 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -168,7 +168,7 @@
     "duration": 100
    },
    "dazel21.png": {
-    "frame": { "x": 48, "y": 48, "w": 16, "h": 16 },
+    "frame": { "x": 54, "y": 54, "w": 18, "h": 18 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -176,7 +176,7 @@
     "duration": 100
    },
    "dazel22.png": {
-    "frame": { "x": 64, "y": 48, "w": 16, "h": 16 },
+    "frame": { "x": 72, "y": 54, "w": 18, "h": 18 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -184,7 +184,7 @@
     "duration": 100
    },
    "dazel23.png": {
-    "frame": { "x": 80, "y": 48, "w": 16, "h": 16 },
+    "frame": { "x": 90, "y": 54, "w": 18, "h": 18 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -192,7 +192,7 @@
     "duration": 100
    },
    "dazel24.png": {
-    "frame": { "x": 0, "y": 64, "w": 16, "h": 16 },
+    "frame": { "x": 0, "y": 72, "w": 18, "h": 18 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -200,7 +200,7 @@
     "duration": 100
    },
    "dazel25.png": {
-    "frame": { "x": 16, "y": 64, "w": 16, "h": 16 },
+    "frame": { "x": 18, "y": 72, "w": 18, "h": 18 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -208,7 +208,7 @@
     "duration": 100
    },
    "dazel26.png": {
-    "frame": { "x": 32, "y": 64, "w": 16, "h": 16 },
+    "frame": { "x": 36, "y": 72, "w": 18, "h": 18 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -216,7 +216,7 @@
     "duration": 100
    },
    "dazel27.png": {
-    "frame": { "x": 48, "y": 64, "w": 16, "h": 16 },
+    "frame": { "x": 54, "y": 72, "w": 18, "h": 18 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -224,7 +224,7 @@
     "duration": 100
    },
    "dazel28.png": {
-    "frame": { "x": 64, "y": 64, "w": 16, "h": 16 },
+    "frame": { "x": 72, "y": 72, "w": 18, "h": 18 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -232,7 +232,7 @@
     "duration": 100
    },
    "dazel29.png": {
-    "frame": { "x": 80, "y": 64, "w": 16, "h": 16 },
+    "frame": { "x": 90, "y": 72, "w": 18, "h": 18 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -240,7 +240,7 @@
     "duration": 100
    },
    "dazel30.png": {
-    "frame": { "x": 0, "y": 80, "w": 16, "h": 16 },
+    "frame": { "x": 0, "y": 90, "w": 18, "h": 18 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -248,7 +248,7 @@
     "duration": 100
    },
    "dazel31.png": {
-    "frame": { "x": 16, "y": 80, "w": 16, "h": 16 },
+    "frame": { "x": 18, "y": 90, "w": 18, "h": 18 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -256,7 +256,7 @@
     "duration": 100
    },
    "dazel32.png": {
-    "frame": { "x": 32, "y": 80, "w": 16, "h": 16 },
+    "frame": { "x": 36, "y": 90, "w": 18, "h": 18 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -264,7 +264,7 @@
     "duration": 100
    },
    "dazel33.png": {
-    "frame": { "x": 48, "y": 80, "w": 16, "h": 16 },
+    "frame": { "x": 54, "y": 90, "w": 18, "h": 18 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -272,7 +272,7 @@
     "duration": 100
    },
    "dazel34.png": {
-    "frame": { "x": 64, "y": 80, "w": 16, "h": 16 },
+    "frame": { "x": 72, "y": 90, "w": 18, "h": 18 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -280,7 +280,7 @@
     "duration": 100
    },
    "dazel35.png": {
-    "frame": { "x": 80, "y": 80, "w": 16, "h": 16 },
+    "frame": { "x": 90, "y": 90, "w": 18, "h": 18 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -293,7 +293,7 @@
   "version": "1.2.40-x64",
   "image": "dazel.png",
   "format": "RGBA8888",
-  "size": { "w": 96, "h": 96 },
+  "size": { "w": 108, "h": 108 },
   "scale": "1",
   "frameTags": [
    { "name": "front-walk", "from": 0, "to": 3, "direction": "forward" },
