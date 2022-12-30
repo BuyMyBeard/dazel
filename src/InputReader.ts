@@ -70,8 +70,6 @@ export class InputReader {
         return;
       
     }
-    console.log(inputType);
-    console.log(InputReader.keysPressed)
     if (!InputReader.keysPressed[inputType]) {
       InputReader.currentInput = inputType;
       InputReader.keysPressed[inputType] = true;

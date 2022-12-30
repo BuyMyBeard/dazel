@@ -18,7 +18,7 @@
         {
             "name": "textures",
             "assets": {
-                "dazel": "textures/dazel.png"
+                "dazel": "textures/dazel.json"
             }
         },
         {

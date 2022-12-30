@@ -3,7 +3,7 @@
 import { AnimatedSprite, Application, Assets, SCALE_MODES, settings, Sprite, Spritesheet, Texture } from 'pixi.js';
 import { Map } from "./Map";
 import { Animations, Player } from "./Entity";
-import { generateTextures } from "./functions";
+import { generateTextures, getTextureArray } from "./functions";
 import { InputReader, inputTypes, KeysPressed } from './InputReader';
 import { Vect2D } from './Vect2D';
 
@@ -27,7 +27,6 @@ const app = new Application({
 
 InputReader.initialize();
 settings.SCALE_MODE = SCALE_MODES.NEAREST;
-settings.WRAP_MODE
 
 await Assets.init({ manifest: "manifest.json" });
 const mapAssets = await Assets.loadBundle("maps");
@@ -43,17 +42,32 @@ map.draw(app, TILE_RESOLUTION, SCALE_MULTIPLIER);
 
 //map.draw(app, TILE_RESOLUTION, SCALE_MULTIPLIER);
 
-
-
-
-const dazelArray: Array<Texture> = generateTextures(textureAssets.dazel, TILE_RESOLUTION, 9, 9);
 const dazelAnimation: Animations = {
-  frontWalk: dazelArray.slice(0, 4),
-  frontAttack: dazelArray.slice(4, 8)
+  Walk : {
+    Down: getTextureArray("dazel", 0, 4),
+    Up: getTextureArray("dazel", 9, 4),
+    Right: getTextureArray("dazel", 18, 4),
+    Left: getTextureArray("dazel", 27, 4),
+    None: null,
+  },
+  Attack : {
+    Down: getTextureArray("dazel", 4, 5),
+    Up: getTextureArray("dazel", 13, 5),
+    Right: getTextureArray("dazel", 22, 5),
+    Left: getTextureArray("dazel", 31, 5),
+    None: null,
+  },
+  Idle : {
+    Down: getTextureArray("dazel", 0, 1),
+    Up: getTextureArray("dazel", 9, 1),
+    Right: getTextureArray("dazel", 18, 1),
+    Left: getTextureArray("dazel", 27, 1),
+    None: null,
+  },
+  None: null,
 }
 
-const dazel = new Player(dazelAnimation, new Vect2D(30, 30))
-dazel.init(app);
+const dazel = new Player(app, dazelAnimation, new Vect2D(30, 30))
 
 app.ticker.add(delta => updateLoop(delta));
 function updateLoop(_: number) {
