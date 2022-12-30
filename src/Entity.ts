@@ -11,6 +11,13 @@ export abstract class Entity {
   protected state : State = "None";
   protected direction : Direction = "None";
   protected sprite : Sprite;
+
+  public get State() {
+    return this.state;
+  }
+  public get Direction() {
+    return this.direction;
+  }
   
 
   public get position()  {
@@ -55,31 +62,48 @@ export abstract class Character extends Entity {
     this.sprite.scale.set(4)
   }
   protected updateAnimation() {
-    console.log(this.state);
-    console.log(this.direction);
     const directionalAnimation : DirectionalAnimation | null = this.animations[this.state];
     if (directionalAnimation === null) {
-      console.log("animation not valid");
+      console.log(`animation not valid \n state: ${this.state}  \n direction: ${this.direction}`);
       return;
     }
     const textures : Array<Texture> | null = directionalAnimation[this.direction];
     if (textures === null) {
-      console.log("animation not valid");
+      console.log(`animation not valid \n state: ${this.state}  \n direction: ${this.direction}`);
       return;
     }
     this.animatedSprite.textures = textures;
+    if (this.state == "Attack") {
+      this.animatedSprite.loop = false;
+      this.animatedSprite.onComplete = this.onAttackEnd.bind(this);
+    }
     this.animatedSprite.play();
+
+  }
+  protected Attack() {
+    this.state = "Attack";
+    this.updateAnimation();
+  }
+
+  protected onAttackEnd() {
+    this.state = "Idle";
+    this.animatedSprite.loop = true;
+    this.animatedSprite.onComplete = undefined;
+    this.updateAnimation();
   }
 }
 
 export class Player extends Character {
-
+  
   constructor(app : Application, animations : Animations, position : IPoint = new Vect2D, hp : number = 3, speed : number = 2) {
     super(app, animations, position, hp, speed)
     this.init();
   }
   
   public update() {
+    if (this.state == "Attack") {
+      return;
+    }
 
     let movement : Vect2D = Vect2D.zero();
     let direction : Direction = "None";
@@ -88,48 +112,51 @@ export class Player extends Character {
         movement.add(Vect2D.up());
         direction = "Up";
         break;
-      
+        
       case "Down":
         movement.add(Vect2D.down());
         direction = "Down";
         break;
-
+          
       case "Left":
         movement.add(Vect2D.left());
         direction = "Left";
         break;
-
+            
       case "Right":
         movement.add(Vect2D.right());
         direction = "Right";
         break;
-
+              
       case "Attack":
-        //attack
+        this.Attack();
         break;
-
+        
       case "Interact":
         //interact
         break;
+      }
+      if (this.state == "Walk" && direction == "None") {
+        this.state = "Idle";
+        this.updateAnimation();
+      } else if ((direction != this.direction && direction != "None") || (direction == this.direction && this.state == "Idle")) {
+        this.direction = direction;
+        this.state = "Walk";
+        this.updateAnimation();
+      }
+      
+      movement.multiply(this.speed);
+      this.move(movement);
     }
-
-    if (direction != "None" && direction != this.direction) {
-      this.direction = direction;
-      this.state = "Walk";
-      this.updateAnimation();
-    } else {
-      this.state = "Idle";
+    
+    protected override Attack(): void {
+      super.Attack();
+      
     }
-
-    //movement.adjustDiagonal();
-    movement.multiply(this.speed);
-    this.move(movement);
   }
+  
 
-}
-
-
-// export type Animations = {
+  // export type Animations = {
 //   frontWalk : Array<Texture>,
 //   frontAttack : Array<Texture>,
 //   backWalk : Array<Texture>,

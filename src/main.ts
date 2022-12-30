@@ -1,10 +1,10 @@
 
 
-import { AnimatedSprite, Application, Assets, SCALE_MODES, settings, Sprite, Spritesheet, Texture } from 'pixi.js';
+import { Text, Application, Assets, SCALE_MODES, settings, Graphics, GraphicsGeometry } from 'pixi.js';
 import { Map } from "./Map";
 import { Animations, Player } from "./Entity";
-import { generateTextures, getTextureArray } from "./functions";
-import { InputReader, inputTypes, KeysPressed } from './InputReader';
+import { getTextureArray } from "./functions";
+import { InputReader} from './InputReader';
 import { Vect2D } from './Vect2D';
 
 
@@ -22,8 +22,8 @@ const app = new Application({
   height: STAGE_HEIGHT,
   backgroundColor: 0xAAAAAA,
   antialias: false,
-
 });
+app.ticker.maxFPS = 60;
 
 InputReader.initialize();
 settings.SCALE_MODE = SCALE_MODES.NEAREST;
@@ -67,10 +67,40 @@ const dazelAnimation: Animations = {
   None: null,
 }
 
+
+
 const dazel = new Player(app, dazelAnimation, new Vect2D(30, 30))
+
+
+const debugBackground : Graphics = new Graphics();
+
+debugBackground.beginFill(0x222222);
+debugBackground.drawRect(0,0, STAGE_WIDTH, 70);
+debugBackground.endFill();
+debugBackground.alpha = 0.5;
+app.stage.addChild(debugBackground);
+
+
+let state = dazel.State;
+let direction = dazel.Direction;
+
+const stateDebug = new Text("dazel.State : " + state, fontAssets.debug);
+const directionDebug = new Text("dazel.Direction : " + direction, fontAssets.debug);
+directionDebug.position.set(0, 40);
+app.stage.addChild(stateDebug);
+app.stage.addChild(directionDebug);
 
 app.ticker.add(delta => updateLoop(delta));
 function updateLoop(_: number) {
   dazel.update();
+  if (dazel.State != state) {
+    state = dazel.State;
+    stateDebug.text = "dazel.State : " + state;
+  }
+  if (dazel.Direction != direction) {
+    direction = dazel.Direction;
+    directionDebug.text = "dazel.Direction : " + direction;
+  }
+
 }
 
