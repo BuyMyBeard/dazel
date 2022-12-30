@@ -1,22 +1,50 @@
-import { Texture, Application, Sprite } from "pixi.js";
+import { Application, Sprite, IPoint } from "pixi.js";
+import * as C from "./Constants";
 
-export class Map {
+export class Map implements IPositionWatcher {
   private tileMap : number[][];
   public readonly width : number;
   public readonly height : number;
   private readonly tileset : String;
+  
+  private app : Application;
+
+  public north : Map | null = null;
+  public south : Map | null = null;
+  public east : Map | null = null;
+  public west : Map | null = null;
 
   /**
    * 
    * @param map loaded asset
    * @param tileset name of tileset in assets (without the extension)
    */
-  public constructor(mapFile : string, tileset : String) {
+  public constructor(mapFile : string, tileset : String, app : Application) {
     this.tileMap = this.generateTileMap(mapFile)
     this.width = this.tileMap[0].length;
     this.height = this.tileMap.length;
     this.tileset = tileset;
+    this.app = app;
   }
+  warn(position: IPoint): void {
+    if (position.x < 0) {
+      this.loadNext(this.west);
+    } else if (position.x > C.STAGE_WIDTH) {
+      this.loadNext(this.east);
+    } else if (position.y < 0) {
+      this.loadNext(this.north);
+    } else if (position.y > C.STAGE_HEIGHT) {
+      this.loadNext(this.south);
+    }
+  }
+  private loadNext(map : Map | null) {
+    if (map === null) {
+      throw "map not defined";
+    }
+    this.app.stage.removeChildren();
+    map.draw();
+  }
+
   private generateTileMap(mapFile : string) : number[][] {
 
     let lines : any = mapFile.split("\n");
@@ -46,17 +74,20 @@ export class Map {
     console.log("height : " + this.height);
   }
 
-  public draw(app : Application, tileRes : number, scale : number) {
+  public draw() {
     for (let i = 0; i < this.tileMap.length; i++) {
       for (let j = 0; j < this.tileMap[0].length; j++) {
         let id = this.tileMap[i][j];
         const sprite : Sprite = Sprite.from(this.tileset + id.toString() + ".png");
-        sprite.position.set(tileRes * scale * j, tileRes * scale * i);
-        sprite.scale.set(scale);
-        app.stage.addChild(sprite);
+        sprite.position.set(C.TILE_RESOLUTION * C.SCALE_MULTIPLIER * j, C.TILE_RESOLUTION * C.SCALE_MULTIPLIER * i);
+        sprite.scale.set(C.SCALE_MULTIPLIER);
+        this.app.stage.addChild(sprite);
       }
     }
   }
+
 }
 
-
+export interface IPositionWatcher {
+  warn(position : IPoint) : void;
+}

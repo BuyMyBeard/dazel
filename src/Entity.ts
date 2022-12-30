@@ -1,6 +1,7 @@
 import { AnimatedSprite, IPoint, Sprite, Texture, Application} from "pixi.js";
 import { Vect2D } from "./Vect2D";
 import { InputReader, KeysPressed } from "./InputReader";
+import { IPositionWatcher } from "./Map";
 
 /** 
  * Represent anything that has a position and a sprite and is not bound to the tileset
@@ -11,6 +12,16 @@ export abstract class Entity {
   protected state : State = "None";
   protected direction : Direction = "None";
   protected sprite : Sprite;
+  protected subs : Array<IPositionWatcher> = [];
+
+  public subscribe(watcher : IPositionWatcher) {
+    this.subs.push(watcher);
+  }
+  protected warnSubs() {
+    for (let sub of this.subs) {
+      sub.warn(this.position);
+    }
+  }
 
   public get State() {
     return this.state;
@@ -18,7 +29,6 @@ export abstract class Entity {
   public get Direction() {
     return this.direction;
   }
-  
 
   public get position()  {
     return this.sprite.position;
@@ -29,6 +39,7 @@ export abstract class Entity {
 
   public move(movement : IPoint) {
     this.position = (movement as Vect2D).add(this.position);
+
   }
 
   constructor(app : Application, sprite : Sprite, position : IPoint) {
@@ -36,8 +47,10 @@ export abstract class Entity {
     this.position = position;
     app.stage.addChild(sprite);
   }
-
-
+  public moveToTop(app : Application) {
+    app.stage.removeChild(this.sprite);
+    app.stage.addChild(this.sprite);
+  }
 }
 export abstract class Character extends Entity {
   protected hp : number;

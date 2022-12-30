@@ -6,20 +6,16 @@ import { Animations, Player } from "./Entity";
 import { getTextureArray } from "./functions";
 import { InputReader} from './InputReader';
 import { Vect2D } from './Vect2D';
+import * as C from './Constants';
 
-
-const TILE_RESOLUTION = 16; //textures are 16 by 16
-const SCALE_MULTIPLIER = 2;
-const STAGE_WIDTH = 16 * TILE_RESOLUTION * SCALE_MULTIPLIER;
-const STAGE_HEIGHT = 11 * TILE_RESOLUTION * SCALE_MULTIPLIER;
 
 
 const app = new Application({
   view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
   resolution: window.devicePixelRatio || 1,
   autoDensity: true,
-  width: STAGE_WIDTH,
-  height: STAGE_HEIGHT,
+  width: C.STAGE_WIDTH,
+  height: C.STAGE_HEIGHT,
   backgroundColor: 0xAAAAAA,
   antialias: false,
 });
@@ -34,8 +30,6 @@ const fontAssets = await Assets.loadBundle("fonts");
 const textureAssets = await Assets.loadBundle("textures");
 await Assets.loadBundle("tilesets");
 
-let map = new Map(mapAssets.map2, "plain-tileset");
-map.draw(app, TILE_RESOLUTION, SCALE_MULTIPLIER);
 
 
 //const Plain_Tileset = generateTextures(tilesetAssets.plain_tileset, TILE_RESOLUTION, 160, 8);
@@ -71,6 +65,11 @@ const dazelAnimation: Animations = {
 
 const dazel = new Player(app, dazelAnimation, new Vect2D(30, 30))
 
+const map1 = new Map(mapAssets.map2, "plain-tileset", app);
+
+map1.draw();
+
+
 
 const debugBackground : Graphics = new Graphics();
 
@@ -89,6 +88,8 @@ const directionDebug = new Text("dazel.Direction : " + direction, fontAssets.deb
 directionDebug.position.set(0, 12);
 app.stage.addChild(stateDebug);
 app.stage.addChild(directionDebug);
+
+dazel.moveToTop(app);
 
 app.ticker.add(delta => updateLoop(delta));
 function updateLoop(_: number) {
