@@ -5,7 +5,7 @@ import { Vect2D } from "./Vect2D";
 import { Entity } from "./Entity";
 
 export class Bat extends Character {
-
+  public static animations : SimpleAnimations;
   static readonly HP = 3;
   static readonly SPEED = 0.5;
   private readonly idleTicker : Ticker = new Ticker();

@@ -5,6 +5,7 @@ import { Vect2D } from "./Vect2D";
 import * as C from "./Constants";
 
 export class Slime extends Character {
+  public static animation : SimpleAnimations;
   private static readonly SPEED = 1;
   private static readonly HP = 3;
   public constructor(animations : SimpleAnimations, position : IPoint, initialDirection : Direction) {
