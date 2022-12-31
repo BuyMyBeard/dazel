@@ -23,6 +23,12 @@ export abstract class Entity {
   public subscribe(watcher: IPositionWatcher) {
     this.subs.push(watcher);
   }
+
+  /**
+   * 
+   * @param newPosition 
+   * @returns true if collision detected, false otherwise
+   */
   protected warnSubs(newPosition: IPoint): boolean {
     let collisionDetected: boolean = false;
     for (let sub of this.subs) {
@@ -46,13 +52,18 @@ export abstract class Entity {
   protected set position(pos: IPoint) {
     this.sprite.position = pos;
   }
-
+  /**
+   * 
+   * @param movement 
+   * @returns true if successful, false otherwise
+   */
   public move(movement: IPoint) : boolean {
     let newPosition = (movement as Vect2D).add(this.position);
     if (!this.warnSubs(newPosition)) {
       this.position = newPosition;
       return true;
     }
+    console.log(newPosition)
     return false;
   }
 

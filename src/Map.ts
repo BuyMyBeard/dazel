@@ -47,13 +47,13 @@ export class Map implements IPositionWatcher {
       return true;
     }
     let directionToLoad: CardinalDirection;
-    if (entity.position.x < 0) {
+    if (newPosition.x < 0) {
       directionToLoad = "West";
-    } else if (entity.position.x > C.STAGE_WIDTH) {
+    } else if (newPosition.x > C.STAGE_WIDTH) {
       directionToLoad = "East";
-    } else if (entity.position.y < 0) {
+    } else if (newPosition.y < 0) {
       directionToLoad = "North";
-    } else if (entity.position.y > C.STAGE_HEIGHT) {
+    } else if (newPosition.y > C.STAGE_HEIGHT) {
       directionToLoad = "South";
     } else {
       return false;

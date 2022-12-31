@@ -62,7 +62,7 @@ const slimeAnimation : SimpleAnimations = {
 
 const dazel = new Player(dazelAnimation, new Vect2D(200, 200));
 
-const slime1 = new Slime(slimeAnimation, new Vect2D(250,250), "None");
+const slime1 = new Slime(slimeAnimation, new Vect2D(250,250), "Up");
 
 const tilesetName = "plain-tileset";
 const maps: { [id: string]: Map } = {
