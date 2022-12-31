@@ -61,9 +61,11 @@ const dazelAnimation: Animations = {
 const tilesetName = "plain-tileset";
 const dazel = new Player(app, dazelAnimation, new Vect2D(200, 200));
 const maps: { [id: string]: Map } = {};
-Object.values(mapAssets).forEach(async (mapDefinition: any, index) =>
-  maps[`map${index + 1}`] = new Map(await Assets.load(mapDefinition.filepath) as string, tilesetName, app)
-);
+const loadMapAssets = Object.values(mapAssets).map(async (mapDefinition: any, index) => {
+  const map = new Map(await Assets.load(mapDefinition.filepath) as string, tilesetName, app);
+  maps[`map${index + 1}`] = map;
+  return map;
+});
 console.log(maps);
 Object.values(maps).forEach((map: Map) => {
   dazel.subscribe(map);
@@ -118,41 +120,43 @@ const collisionSpecifications: Array<[number, TypeCollision]> = [
   [92, "Square"],
   [93, "BottomLeftTriangle"],
 ]
-maps.map1.draw(collisionSpecifications);
+Promise.all(loadMapAssets).then(() => {
+  maps.map1.draw(collisionSpecifications);
+  const debugBackground: Graphics = new Graphics();
+
+  debugBackground.beginFill(0x222222);
+  debugBackground.drawRect(0, 0, 150, 70);
+  debugBackground.endFill();
+  debugBackground.alpha = 0.5;
+  app.stage.addChild(debugBackground);
 
 
+  let state = dazel.State;
+  let direction = dazel.Direction;
 
-const debugBackground: Graphics = new Graphics();
+  const stateDebug = new Text("dazel.State : " + state, fontAssets.debug);
+  const directionDebug = new Text("dazel.Direction : " + direction, fontAssets.debug);
+  directionDebug.position.set(0, 12);
+  app.stage.addChild(stateDebug);
+  app.stage.addChild(directionDebug);
 
-debugBackground.beginFill(0x222222);
-debugBackground.drawRect(0, 0, 150, 70);
-debugBackground.endFill();
-debugBackground.alpha = 0.5;
-app.stage.addChild(debugBackground);
+  dazel.moveToTop(app);
 
+  app.ticker.add(delta => updateLoop(delta));
+  function updateLoop(_: number) {
+    dazel.update();
+    if (dazel.State != state) {
+      state = dazel.State;
+      stateDebug.text = "dazel.State : " + state;
+    }
+    if (dazel.Direction != direction) {
+      direction = dazel.Direction;
+      directionDebug.text = "dazel.Direction : " + direction;
+    }
 
-let state = dazel.State;
-let direction = dazel.Direction;
-
-const stateDebug = new Text("dazel.State : " + state, fontAssets.debug);
-const directionDebug = new Text("dazel.Direction : " + direction, fontAssets.debug);
-directionDebug.position.set(0, 12);
-app.stage.addChild(stateDebug);
-app.stage.addChild(directionDebug);
-
-dazel.moveToTop(app);
-
-app.ticker.add(delta => updateLoop(delta));
-function updateLoop(_: number) {
-  dazel.update();
-  if (dazel.State != state) {
-    state = dazel.State;
-    stateDebug.text = "dazel.State : " + state;
   }
-  if (dazel.Direction != direction) {
-    direction = dazel.Direction;
-    directionDebug.text = "dazel.Direction : " + direction;
-  }
+});
 
-}
+
+
 
