@@ -62,7 +62,7 @@ export class Map implements IPositionWatcher {
       return true;
     }
     this.loadNext(this[directionToLoad]);
-    (entity as Player).changeMap(Map.app, directionToLoad);
+    (entity as Player).changeMap(directionToLoad);
     console.log(this[directionToLoad]);
     return true; //position will already get updated by changeMap method
   }
