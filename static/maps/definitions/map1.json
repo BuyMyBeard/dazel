@@ -1,0 +1,12 @@
+{
+    "map": "../map1.txt",
+    "entities": {
+        "slime1": {
+            "name": "Slime",
+            "position": {
+                "x": 0,
+                "y": 0
+            }
+        }
+    }
+}

@@ -3,15 +3,14 @@
         {
             "name": "maps",
             "assets": {
-                "map1": "maps/map1.csv",
-                "map2": "maps/map2.csv",
-                "map3": "maps/map3.csv",
-                "map4": "maps/map4.csv",
-                "map5": "maps/map5.csv",
-                "map6": "maps/map6.csv",
-                "map7": "maps/map7.csv",
-                "map8": "maps/map8.csv",
-                "map9": "maps/map9.csv"
+                "map1": "maps/map1.txt",
+                "map2": "maps/map2.txt",
+                "map3": "maps/map3.txt",
+                "map4": "maps/map4.txt",
+                "map5": "maps/map5.txt",
+                "map6": "maps/map6.txt",
+                "map7": "maps/map7.txt",
+                "map8": "maps/map8.txt"
             }
         },
         {
