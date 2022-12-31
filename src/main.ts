@@ -4,7 +4,7 @@ import { Text, Application, Assets, SCALE_MODES, settings, Graphics, GraphicsGeo
 import { Map, TypeCollision } from "./Map";
 import { Animations, Player } from "./Entity";
 import { getTextureArray } from "./functions";
-import { InputReader} from './InputReader';
+import { InputReader } from './InputReader';
 import { Vect2D } from './Vect2D';
 import * as C from './Constants';
 
@@ -30,28 +30,28 @@ const fontAssets = await Assets.loadBundle("fonts");
 const textureAssets = await Assets.loadBundle("textures");
 await Assets.loadBundle("tilesets");
 
-
+console.log(mapAssets);
 
 //const Plain_Tileset = generateTextures(tilesetAssets.plain_tileset, TILE_RESOLUTION, 160, 8);
 
 //map.draw(app, TILE_RESOLUTION, SCALE_MULTIPLIER);
 
 const dazelAnimation: Animations = {
-  Walk : {
+  Walk: {
     Down: getTextureArray("dazel", 0, 4),
     Up: getTextureArray("dazel", 9, 4),
     Right: getTextureArray("dazel", 18, 4),
     Left: getTextureArray("dazel", 27, 4),
     None: null,
   },
-  Attack : {
+  Attack: {
     Down: getTextureArray("dazel", 4, 5),
     Up: getTextureArray("dazel", 13, 5),
     Right: getTextureArray("dazel", 22, 5),
     Left: getTextureArray("dazel", 31, 5),
     None: null,
   },
-  Idle : {
+  Idle: {
     Down: getTextureArray("dazel", 1, 1),
     Up: getTextureArray("dazel", 10, 1),
     Right: getTextureArray("dazel", 19, 1),
@@ -74,34 +74,45 @@ const maps : { [id: string] : Map} = {
   map8 : new Map(mapAssets.map8, tilesetName, app),
 }
 
-Object.values(maps).forEach((map : Map) => {
+Object.values(maps).forEach((map: Map) => {
   dazel.subscribe(map);
 });
 
 maps.map1.North = maps.map2;
 maps.map2.South = maps.map1;
 
-const collisionSpecifications : Array<[number, TypeCollision]> = [
+const collisionSpecifications: Array<[number, TypeCollision]> = [
+  [13, "BottomRightTriangle"],
   [14, "Square"],
+  [15, "BottomLeftTriangle"],
+  [21, "TopRightTriangle"],
   [22, "Square"],
+  [23, "TopLeftTriangle"],
+  [30, "TopLeftTriangle"],
+  [39, "BottomRightTriangle"],
+  [40, "Square"],
+  [47, "Square"],
+  [48, "Square"],
   [49, "Square"],
   [50, "Square"],
-  [54, "Square"],
-  [21, "TopRightTriangle"],
-  [15, "BottomLeftTriangle"],
-  [23, "TopLeftTriangle"],
+  [51, "BottomRightTriangle"],
   [52, "BottomLeftTriangle"],
-  [13, "BottomRightTriangle"],
+  [53, "TopRightTriangle"],
+  [54, "Square"],
+  [55, "TopLeftTriangle"],
+  [56, "TopLeftTriangle"],
+  [57, "Square"],
+  [65, "Square"],
 ]
 
 maps.map1.draw(collisionSpecifications);
 
 
 
-const debugBackground : Graphics = new Graphics();
+const debugBackground: Graphics = new Graphics();
 
 debugBackground.beginFill(0x222222);
-debugBackground.drawRect(0,0, 150, 70);
+debugBackground.drawRect(0, 0, 150, 70);
 debugBackground.endFill();
 debugBackground.alpha = 0.5;
 app.stage.addChild(debugBackground);
