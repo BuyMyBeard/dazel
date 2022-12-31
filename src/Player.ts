@@ -7,6 +7,7 @@ import { Vect2D } from "./Vect2D";
 import { InputReader } from "./InputReader";
 
 export class Player extends Character {
+  public static animation : Animations;
   private attackFramesTicker: Ticker = new Ticker();
 
   changeMap(cardinalDirection: CardinalDirection) {
