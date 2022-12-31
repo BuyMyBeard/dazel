@@ -144,10 +144,12 @@ Promise.all(loadMapAssets).then(() => {
   dazel.debug();
   slime1.moveToTop();
   dazel.moveToTop();
+  bat1.moveToTop();
   app.ticker.add(delta => updateLoop(delta));
   function updateLoop(_: number) {
     dazel.update();
     slime1.update();
+    bat1.update();
     if (dazel.State != state) {
       state = dazel.State;
       stateDebug.text = "dazel.State : " + state;
