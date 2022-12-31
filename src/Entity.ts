@@ -31,11 +31,20 @@ export abstract class Entity {
    */
   protected warnSubs(newPosition: IPoint): boolean {
     let collisionDetected: boolean = false;
+    let activeSub : IPositionWatcher | null = null; 
     for (let sub of this.subs) {
-      if (sub.warn(this, newPosition)) {
-        collisionDetected = true;
+      if (sub.active) {
+        activeSub = sub;
+        break;
       }
     }
+    if (activeSub == null) {
+      return false;
+    }
+    if (activeSub.warn(this, newPosition)) {
+      collisionDetected = true;
+    }
+    
     return collisionDetected;
   }
 

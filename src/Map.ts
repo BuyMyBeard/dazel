@@ -5,16 +5,21 @@ import { Player } from "./Player";
 import { Vect2D } from "./Vect2D";
 
 export type CardinalDirection = "North" | "South" | "East" | "West";
-
+export type MapNeighbors = {
+  [key in CardinalDirection]?: Map
+}
+export type MapNetwork = {
+  [key: string]: MapNeighbors
+}
 export class Map implements IPositionWatcher {
   private tileMap: number[][];
   private collisionMap: CollisionMap = new CollisionMap;
   public collisionSpecifications: Array<[number, TypeCollision]> = [];
-
+  private neighbors: MapNeighbors | undefined;
   public readonly width: number;
   public readonly height: number;
   private readonly tileset: String;
-  private active: boolean = false;
+  public active: boolean = false;
 
   public static app: Application;
 
@@ -35,46 +40,49 @@ export class Map implements IPositionWatcher {
     this.tileset = tileset;
   }
   /**
-   * 
+   * prerequisite: Map must be active
    * @param entity entity to check position of
    * @returns true if collision registered, false otherwise
    */
   warn(entity: Entity, newPosition: IPoint): boolean {
-    if (!this.active) {
-      return false;
-    }
     if (this.collisionMap.checkCollision(newPosition)) {
       return true;
     }
-    let directionToLoad: CardinalDirection;
-    if (newPosition.x < 0) {
-      directionToLoad = "West";
-    } else if (newPosition.x > C.STAGE_WIDTH) {
-      directionToLoad = "East";
-    } else if (newPosition.y < 0) {
-      directionToLoad = "North";
-    } else if (newPosition.y > C.STAGE_HEIGHT) {
-      directionToLoad = "South";
-    } else {
-      return false;
+    let directionToLoad: CardinalDirection | undefined;
+    if (this.neighbors !== undefined) {
+      if (newPosition.x < 0) {
+        directionToLoad = "West";
+      } else if (newPosition.x > C.STAGE_WIDTH) {
+        directionToLoad = "East";
+      } else if (newPosition.y < 0) {
+        directionToLoad = "North";
+      } else if (newPosition.y > C.STAGE_HEIGHT) {
+        directionToLoad = "South"
+      } else {
+        return false;
+      }
+      if (!(entity instanceof Player)) {
+        return true;
+      }
+      console.log(newPosition);
+      this.loadNext(this.neighbors[directionToLoad]);
+      (entity as Player).changeMap(directionToLoad);
     }
-    if (!(entity instanceof Player)) {
-      return true;
-    }
-    this.loadNext(this[directionToLoad]);
-    (entity as Player).changeMap(directionToLoad);
-    console.log(this[directionToLoad]);
     return true; //position will already get updated by changeMap method
   }
-  private loadNext(map: Map | null) {
-    if (map === null) {
-      throw "map not defined";
+  private loadNext(map: Map | undefined) {
+    if (map === undefined) {
+      //throw "map not defined";
+      return;
     }
     this.active = false;
-    let content = Map.app.stage.removeChildren();
+    Map.app.stage.removeChildren();
     map.draw(this.collisionSpecifications);
+    
   }
-
+  public subscribeNeighbors(mapNeighbors: MapNeighbors) {
+    this.neighbors = mapNeighbors;
+  }
   private generateTileMap(mapFile: string): number[][] {
 
     let lines: any = mapFile.split("\n");
@@ -133,6 +141,7 @@ export class Map implements IPositionWatcher {
 }
 
 export interface IPositionWatcher {
+  active : boolean;
   warn(entity: Entity, newPosition: IPoint): boolean;
 }
 
@@ -205,3 +214,5 @@ class CollisionMap {
     return (linePoint2.x - linePoint1.x) * (point.y - linePoint1.y) - (linePoint2.y - linePoint1.y) * (point.x - linePoint1.x);
   }
 }
+console.log("stage width",C.STAGE_WIDTH);
+console.log("stage height",C.STAGE_HEIGHT)

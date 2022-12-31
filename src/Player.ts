@@ -28,6 +28,7 @@ export class Player extends Character {
       case "South":
         this.position.y = 30;
     }
+    console.log(this.position);
   }
 
   constructor(animations: Animations, position: IPoint = new Vect2D) {
@@ -75,7 +76,7 @@ export class Player extends Character {
         break;
 
       case "Interact":
-        //interact
+        console.log(this.subs);
         break;
     }
     if (this.state == "Walk" && direction == "None") {
