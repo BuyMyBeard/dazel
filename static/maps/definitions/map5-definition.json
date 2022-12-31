@@ -1,0 +1,18 @@
+{
+    "filepath": "maps/map5.txt",
+    "neighbors": {
+        "North": "map2",
+        "South": "map2",
+        "East": "map2",
+        "West": "map2"
+    },
+    "entities": {
+        "slime1": {
+            "name": "Slime",
+            "position": {
+                "x": 0,
+                "y": 0
+            }
+        }
+    }
+}
