@@ -29,7 +29,7 @@ export class Player extends Character {
   }
   
   constructor(app : Application, animations : Animations, position : IPoint = new Vect2D, hp : number = 3, speed : number = 2) {
-    super(app, animations, undefined, position, hp, speed, animations.Idle.Down)
+    super(app, animations.Idle.Down, position, hp, speed, animations)
     this.init();
     this.sprite.anchor.set(0.5, 0.9);
   }

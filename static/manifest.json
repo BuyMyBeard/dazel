@@ -22,13 +22,14 @@
         {
             "name": "textures",
             "assets": {
-                "dazel": "textures/dazel.json"
+                "dazel": "textures/dazel.json",
+                "slime": "textures/slime.json"
             }
         },
         {
             "name": "tilesets",
             "assets": {
-                "plain_tileset": "maps/tilesets/plain-tileset.json"
+                "plain_tileset": "textures/tilesets/plain-tileset.json"
             }
         }
     ]

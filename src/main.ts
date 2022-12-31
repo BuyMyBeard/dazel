@@ -1,11 +1,13 @@
-import { Text, Application, Assets, SCALE_MODES, settings, Graphics, GraphicsGeometry } from 'pixi.js';
+import { Text, Application, Assets, SCALE_MODES, settings, Graphics, GraphicsGeometry, filters } from 'pixi.js';
 import { Map, TypeCollision } from "./Map";
-import { Animations } from './Character';
+import { Animations, SimpleAnimations } from './Character';
 import { Player } from './Player';
 import { getTextureArray } from "./functions";
 import { InputReader } from './InputReader';
 import { Vect2D } from './Vect2D';
 import * as C from './Constants';
+import { Slime } from './Slime';
+import { Entity } from './Entity';
 
 const app = new Application({
   view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
@@ -32,34 +34,41 @@ console.log(mapAssets);
 //const Plain_Tileset = generateTextures(tilesetAssets.plain_tileset, TILE_RESOLUTION, 160, 8);
 
 //map.draw(app, TILE_RESOLUTION, SCALE_MULTIPLIER);
-
+let name = "dazel";
 const dazelAnimation: Animations = {
   Walk: {
-    Down: getTextureArray("dazel", 0, 4),
-    Up: getTextureArray("dazel", 9, 4),
-    Right: getTextureArray("dazel", 18, 4),
-    Left: getTextureArray("dazel", 27, 4),
+    Down: getTextureArray(name, 0, 4),
+    Up: getTextureArray(name, 9, 4),
+    Right: getTextureArray(name, 18, 4),
+    Left: getTextureArray(name, 27, 4),
     None: null,
   },
   Attack: {
-    Down: getTextureArray("dazel", 4, 5),
-    Up: getTextureArray("dazel", 13, 5),
-    Right: getTextureArray("dazel", 22, 5),
-    Left: getTextureArray("dazel", 31, 5),
+    Down: getTextureArray(name, 4, 5),
+    Up: getTextureArray(name, 13, 5),
+    Right: getTextureArray(name, 22, 5),
+    Left: getTextureArray(name, 31, 5),
     None: null,
   },
   Idle: {
-    Down: getTextureArray("dazel", 1, 1),
-    Up: getTextureArray("dazel", 10, 1),
-    Right: getTextureArray("dazel", 19, 1),
-    Left: getTextureArray("dazel", 28, 1),
+    Down: getTextureArray(name, 1, 1),
+    Up: getTextureArray(name, 10, 1),
+    Right: getTextureArray(name, 19, 1),
+    Left: getTextureArray(name, 28, 1),
     None: null,
   },
   None: null,
 }
+name = "slime";
+const slimeAnimation : SimpleAnimations = {
+  Walk : getTextureArray(name, 0, 8),
+};
+
+const dazel = new Player(app, dazelAnimation, new Vect2D(200, 200));
+
+const slime1 = new Slime(app, slimeAnimation, new Vect2D(300,250));
 
 const tilesetName = "plain-tileset";
-const dazel = new Player(app, dazelAnimation, new Vect2D(200, 200))
 const maps: { [id: string]: Map } = {
   map1: new Map(mapAssets.map1, tilesetName, app),
   map2: new Map(mapAssets.map2, tilesetName, app),
@@ -78,57 +87,7 @@ Object.values(maps).forEach((map: Map) => {
 maps.map1.North = maps.map2;
 maps.map2.South = maps.map1;
 
-const collisionSpecifications: Array<[number, TypeCollision]> = [
-  [13, "BottomRightTriangle"],
-  [14, "Square"],
-  [15, "BottomLeftTriangle"],
-  [21, "TopRightTriangle"],
-  [22, "Square"],
-  [23, "TopLeftTriangle"],
-  [30, "TopLeftTriangle"],
-  [39, "BottomRightTriangle"],
-  [40, "Square"],
-  [47, "Square"],
-  [48, "Square"],
-  [49, "Square"],
-  [50, "Square"],
-  [51, "BottomRightTriangle"],
-  [52, "BottomLeftTriangle"],
-  [53, "TopRightTriangle"],
-  [54, "Square"],
-  [55, "TopLeftTriangle"],
-  [56, "Square"],
-  [64, "Square"],
-  [65, "Square"],
-  [66, "Square"],
-  [67, "Square"],
-  [68, "Square"],
-  [69, "Square"],
-  [70, "Square"],
-  [71, "Square"],
-  [72, "Square"],
-  [73, "Square"],
-  [74, "Square"],
-  [75, "Square"],
-  [76, "Square"],
-  [77, "Square"],
-  [78, "Square"],
-  [79, "Square"],
-  [82, "Square"],
-  [83, "Square"],
-  [84, "Square"],
-  [85, "Square"],
-  [86, "Square"],
-  [87, "Square"],
-  [88, "Square"],
-  [89, "Square"],
-  [90, "Square"],
-  [91, "BottomLeftTriangle"],
-  [92, "Square"],
-  [93, "BottomLeftTriangle"],
-]
-
-maps.map1.draw(collisionSpecifications);
+maps.map1.draw(C.COLLISION_SPECIFICATIONS);
 
 const debugBackground: Graphics = new Graphics();
 
@@ -138,16 +97,14 @@ debugBackground.endFill();
 debugBackground.alpha = 0.5;
 app.stage.addChild(debugBackground);
 
-
 let state = dazel.State;
 let direction = dazel.Direction;
 
 const stateDebug = new Text("dazel.State : " + state, fontAssets.debug);
 const directionDebug = new Text("dazel.Direction : " + direction, fontAssets.debug);
 directionDebug.position.set(0, 12);
-app.stage.addChild(stateDebug);
-app.stage.addChild(directionDebug);
 
+slime1.moveToTop(app);
 dazel.moveToTop(app);
 
 app.ticker.add(delta => updateLoop(delta));
@@ -161,6 +118,7 @@ function updateLoop(_: number) {
     direction = dazel.Direction;
     directionDebug.text = "dazel.Direction : " + direction;
   }
-
 }
 
+app.stage.addChild(stateDebug);
+app.stage.addChild(directionDebug);

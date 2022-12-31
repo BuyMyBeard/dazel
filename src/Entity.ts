@@ -45,8 +45,6 @@ export abstract class Entity {
     if (!this.warnSubs(newPosition)) {
       this.position = newPosition;
     }
-
-    
   }
 
   constructor(app : Application, sprite : Sprite, position : IPoint) {

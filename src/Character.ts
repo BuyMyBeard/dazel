@@ -11,19 +11,19 @@ export abstract class Character extends Entity {
     return (this.sprite as AnimatedSprite);
   }
 
-  constructor(app : Application, animations : Animations | undefined = undefined, simpleAnimations : SimpleAnimations | undefined = undefined,
-     position : IPoint, hp : number = 3, speed : number = 10, animation : Array<Texture>) {
+  constructor(app : Application, animation : Array<Texture>, position : IPoint, hp : number = 3, speed : number = 10, 
+    animations : Animations | undefined = undefined, simpleAnimations : SimpleAnimations | undefined = undefined) {
     super(app, new AnimatedSprite(animation), position);
     this.hp = hp;
     this.speed = speed;
     this.animations = animations;
   }
 
-  protected init() { // to make more flexible
+  protected init(scale : number = 4) { // to make more flexible
     let anim = (this.sprite as AnimatedSprite);
     anim.play()
     anim.animationSpeed = 0.2;
-    this.sprite.scale.set(4)
+    this.sprite.scale.set(scale)
   }
   protected updateAnimation()  {
     if (this.animations == undefined)
@@ -60,6 +60,7 @@ export abstract class Character extends Entity {
   public static isSimpleAnimations(animations : Animations | SimpleAnimations) {
     return (Object.keys(animations).length < 4);
   }
+  public abstract update() : void;
 }
 
 export type Animations = {
