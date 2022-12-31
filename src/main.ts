@@ -8,6 +8,7 @@ import { Vect2D } from './Vect2D';
 import * as C from './Constants';
 import { Slime } from './Slime';
 import { Entity } from './Entity';
+import { Bat } from './Bat';
 
 const app = new Application({
   view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
@@ -60,9 +61,16 @@ const slimeAnimation : SimpleAnimations = {
   Walk : getTextureArray(name, 0, 8),
 };
 
+name = "bat";
+const batAnimation : SimpleAnimations = {
+  Walk : getTextureArray(name, 0, 10),
+}
+
 const dazel = new Player(dazelAnimation, new Vect2D(200, 200));
 
 const slime1 = new Slime(slimeAnimation, new Vect2D(250,250), "Up");
+
+const bat1 = new Bat(batAnimation, new Vect2D(400, 250));
 
 const tilesetName = "plain-tileset";
 const maps: { [id: string]: Map } = {
@@ -96,18 +104,23 @@ app.stage.addChild(debugBackground);
 
 let state = dazel.State;
 let direction = dazel.Direction;
+let displacement = bat1.displacement;
 
 const stateDebug = new Text("dazel.State : " + state, fontAssets.debug);
 const directionDebug = new Text("dazel.Direction : " + direction, fontAssets.debug);
+//const batDebug = new Text("bat1.displacement : " + displacement, fontAssets.debug);
 directionDebug.position.set(0, 12);
+//batDebug.position.set(0, 24);
 
 slime1.moveToTop(app);
 dazel.moveToTop(app);
+bat1.moveToTop(app);
 
 app.ticker.add(delta => updateLoop(delta));
 function updateLoop(_: number) {
   dazel.update();
   slime1.update();
+  bat1.update();
   if (dazel.State != state) {
     state = dazel.State;
     stateDebug.text = "dazel.State : " + state;
@@ -116,11 +129,16 @@ function updateLoop(_: number) {
     direction = dazel.Direction;
     directionDebug.text = "dazel.Direction : " + direction;
   }
+  // if (bat1.displacement != displacement) {
+  //   displacement = bat1.displacement;
+  //   batDebug.text = "bat1.displacement : " + displacement;
+  // }
+
 }
 
 app.stage.addChild(stateDebug);
 app.stage.addChild(directionDebug);
-
+// app.stage.addChild(batDebug);
 
 slime1.debug();
 dazel.debug();

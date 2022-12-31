@@ -23,7 +23,8 @@
             "name": "textures",
             "assets": {
                 "dazel": "textures/dazel.json",
-                "slime": "textures/slime.json"
+                "slime": "textures/slime.json",
+                "bat": "textures/bat.json"
             }
         },
         {

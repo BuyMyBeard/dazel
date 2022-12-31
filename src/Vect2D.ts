@@ -20,7 +20,13 @@ export class Vect2D implements IPoint {
     return p;
   }
 
+  public get norm() {
+    return Math.sqrt(this.x ** 2 + this.y ** 2);
+  }
 
+  public static from(p : IPoint) {
+    return new Vect2D(p.x, p.y);
+  }
   public static zero() : Vect2D{
     return new Vect2D(0, 0);
   }
@@ -108,5 +114,10 @@ export class Vect2D implements IPoint {
     } else {
       return "None";
     }
+  }
+
+  public static unit(p1 : IPoint, p2 : IPoint) {
+    const delta = new Vect2D(p2.x - p1.x, p2.y - p1.y);
+    return delta.multiply(1 / delta.norm);
   }
 }

@@ -63,7 +63,6 @@ export abstract class Entity {
       this.position = newPosition;
       return true;
     }
-    console.log(newPosition)
     return false;
   }
 
