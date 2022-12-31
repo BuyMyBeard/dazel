@@ -70,6 +70,10 @@ export class Vect2D implements IPoint {
     return this;
   }
 
+  public static multiply(vect : IPoint, scalar : number) : Vect2D {
+    return new Vect2D(vect.x * scalar, vect.y * scalar);
+  }
+
   public distance(point : IPoint) : number {
     return Math.sqrt((point.x - this.x) ** 2 + (point.y - this.y) ** 2);
   }
@@ -90,6 +94,19 @@ export class Vect2D implements IPoint {
 
       case "None":
         return Vect2D.zero();
+    }
+  }
+  public static ToDirection(vect : IPoint) : Direction {
+    if (Vect2D.up().equals(vect)) {
+      return "Up";
+    } else if (Vect2D.down().equals(vect)) {
+      return "Down";
+    } else if (Vect2D.left().equals(vect)) {
+      return "Left";
+    } else if (Vect2D.right().equals(vect)) {
+      return "Right"
+    } else {
+      return "None";
     }
   }
 }

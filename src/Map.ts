@@ -46,9 +46,6 @@ export class Map implements IPositionWatcher {
     if (this.collisionMap.checkCollision(newPosition)) {
       return true;
     }
-    if (!(entity instanceof Player)) {
-      
-    }
     let directionToLoad: CardinalDirection;
     if (entity.position.x < 0) {
       directionToLoad = "West";
@@ -60,6 +57,9 @@ export class Map implements IPositionWatcher {
       directionToLoad = "South";
     } else {
       return false;
+    }
+    if (!(entity instanceof Player)) {
+      return true;
     }
     this.loadNext(this[directionToLoad]);
     (entity as Player).changeMap(Map.app, directionToLoad);

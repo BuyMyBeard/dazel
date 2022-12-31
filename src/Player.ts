@@ -29,13 +29,16 @@ export class Player extends Character {
     }
   }
 
-  constructor(app: Application, animations: Animations, position: IPoint = new Vect2D, hp: number = 3, speed: number = 2) {
-    super(app, animations.Idle.Down, position, hp, speed, animations)
+  constructor(animations: Animations, position: IPoint = new Vect2D) {
+    super(animations.Idle.Down, position,animations)
     this.init();
     this.sprite.anchor.set(0.5, 0.9);
     this.attackFramesTicker.add(this.checkAttackRange, this);
     this.range = 30;
     this.aoeRange = 15;
+    this.speed = 2;
+    this.state = "Idle";
+    this.direction = "Down";
   }
 
   public update() {

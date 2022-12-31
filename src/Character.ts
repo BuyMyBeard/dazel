@@ -1,13 +1,12 @@
 import { Entity } from "./Entity";
 import { AnimatedSprite, Application, Circle, Graphics, IPoint, Texture, Ticker } from "pixi.js";
 import { ColorOverlayFilter } from "@pixi/filter-color-overlay";
-import { Map } from "./Map";
 
 export abstract class Character extends Entity {
-  protected hp : number;
+  protected hp : number = 3;
   protected animations : Animations | undefined;
   protected simpleAnimations : SimpleAnimations | undefined;
-  protected speed : number;
+  protected speed : number = 10;
   private readonly damageFilter = new ColorOverlayFilter(0xFF0000, 0);
   protected damaged : boolean = false;
   protected range : number = 1;
@@ -26,11 +25,9 @@ export abstract class Character extends Entity {
     return (this.sprite as AnimatedSprite);
   }
 
-  constructor(app : Application, animation : Array<Texture>, position : IPoint, hp : number = 3, speed : number = 10, 
+  constructor(animation : Array<Texture>, position : IPoint, 
     animations : Animations | undefined = undefined, simpleAnimations : SimpleAnimations | undefined = undefined) {
-    super(app, new AnimatedSprite(animation), position);
-    this.hp = hp;
-    this.speed = speed;
+    super(new AnimatedSprite(animation), position);
     this.animations = animations;
   }
 

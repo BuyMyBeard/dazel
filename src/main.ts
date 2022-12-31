@@ -1,5 +1,5 @@
-import { Text, Application, Assets, SCALE_MODES, settings, Graphics, GraphicsGeometry, filters, Ticker } from 'pixi.js';
-import { Map, TypeCollision } from "./Map";
+import { Text, Application, Assets, SCALE_MODES, settings, Graphics} from 'pixi.js';
+import { Map } from "./Map";
 import { Animations, SimpleAnimations } from './Character';
 import { Player } from './Player';
 import { getTextureArray } from "./functions";
@@ -60,9 +60,9 @@ const slimeAnimation : SimpleAnimations = {
   Walk : getTextureArray(name, 0, 8),
 };
 
-const dazel = new Player(app, dazelAnimation, new Vect2D(200, 200));
+const dazel = new Player(dazelAnimation, new Vect2D(200, 200));
 
-const slime1 = new Slime(app, slimeAnimation, new Vect2D(300,250));
+const slime1 = new Slime(slimeAnimation, new Vect2D(250,250), "None");
 
 const tilesetName = "plain-tileset";
 const maps: { [id: string]: Map } = {
@@ -78,6 +78,7 @@ const maps: { [id: string]: Map } = {
 
 Object.values(maps).forEach((map: Map) => {
   dazel.subscribe(map);
+  slime1.subscribe(map);
 });
 
 maps.map1.North = maps.map2;
@@ -120,4 +121,6 @@ function updateLoop(_: number) {
 app.stage.addChild(stateDebug);
 app.stage.addChild(directionDebug);
 
+
 slime1.debug();
+dazel.debug();

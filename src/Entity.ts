@@ -47,20 +47,19 @@ export abstract class Entity {
     this.sprite.position = pos;
   }
 
-  public move(movement: IPoint) {
+  public move(movement: IPoint) : boolean {
     let newPosition = (movement as Vect2D).add(this.position);
     if (!this.warnSubs(newPosition)) {
       this.position = newPosition;
-      if (this.anchorVisualisation != undefined) {
-        this.anchorVisualisation.position = newPosition;
-      }
+      return true;
     }
+    return false;
   }
 
-  constructor(app: Application, sprite: Sprite, position: IPoint) {
+  constructor(sprite: Sprite, position: IPoint) {
     this.sprite = sprite;
     this.position = position;
-    app.stage.addChild(sprite);
+    Map.app.stage.addChild(sprite);
     Entity.pool.push(this);
     if (this instanceof Player) {
       Entity.player = this;
@@ -74,11 +73,12 @@ export abstract class Entity {
   public debug() {
     const g: Graphics = new Graphics();
     g.beginFill(0x0000FF);
-    g.drawCircle(this.position.x, this.position.y, 2);
+    g.drawCircle(0,0, 1);
     g.endFill();
     g.alpha = 0.8;
+    g.scale.set(0.5);
     this.anchorVisualisation = g;
     this.inDebug = true;
-    Map.app.stage.addChild(g);
+    this.sprite.addChild(g);
   }
 }
