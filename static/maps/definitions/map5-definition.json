@@ -1,10 +1,10 @@
 {
-    "map": "../map1.txt",
+    "filepath": "maps/map5.txt",
     "neighbors": {
         "North": "map2",
-        "South": null,
-        "East": null,
-        "West": null
+        "South": "map2",
+        "East": "map2",
+        "West": "map2"
     },
     "entities": {
         "slime1": {

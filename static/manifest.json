@@ -3,14 +3,14 @@
         {
             "name": "maps",
             "assets": {
-                "map1": "maps/map1.txt",
-                "map2": "maps/map2.txt",
-                "map3": "maps/map3.txt",
-                "map4": "maps/map4.txt",
-                "map5": "maps/map5.txt",
-                "map6": "maps/map6.txt",
-                "map7": "maps/map7.txt",
-                "map8": "maps/map8.txt"
+                "map1": "maps/definitions/map1-definition.json",
+                "map2": "maps/definitions/map2-definition.json",
+                "map3": "maps/definitions/map3-definition.json",
+                "map4": "maps/definitions/map4-definition.json",
+                "map5": "maps/definitions/map5-definition.json",
+                "map6": "maps/definitions/map6-definition.json",
+                "map7": "maps/definitions/map7-definition.json",
+                "map8": "maps/definitions/map8-definition.json"
             }
         },
         {
