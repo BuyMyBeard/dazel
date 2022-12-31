@@ -9,7 +9,6 @@ import { Vect2D } from './Vect2D';
 import * as C from './Constants';
 
 
-
 const app = new Application({
   view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
   resolution: window.devicePixelRatio || 1,
@@ -29,8 +28,6 @@ const mapAssets = await Assets.loadBundle("maps");
 const fontAssets = await Assets.loadBundle("fonts");
 const textureAssets = await Assets.loadBundle("textures");
 await Assets.loadBundle("tilesets");
-
-console.log(mapAssets);
 
 //const Plain_Tileset = generateTextures(tilesetAssets.plain_tileset, TILE_RESOLUTION, 160, 8);
 
@@ -62,24 +59,15 @@ const dazelAnimation: Animations = {
 }
 
 const tilesetName = "plain-tileset";
-const dazel = new Player(app, dazelAnimation, new Vect2D(200, 200))
-const maps: { [id: string]: Map } = {
-  map1: new Map(mapAssets.map1, tilesetName, app),
-  map2: new Map(mapAssets.map2, tilesetName, app),
-  map3: new Map(mapAssets.map3, tilesetName, app),
-  map4: new Map(mapAssets.map4, tilesetName, app),
-  map5: new Map(mapAssets.map5, tilesetName, app),
-  map6: new Map(mapAssets.map6, tilesetName, app),
-  map7: new Map(mapAssets.map7, tilesetName, app),
-  map8: new Map(mapAssets.map8, tilesetName, app),
-}
-
+const dazel = new Player(app, dazelAnimation, new Vect2D(200, 200));
+const maps: { [id: string]: Map } = {};
+Object.values(mapAssets).forEach(async (mapDefinition: any, index) =>
+  maps[`map${index + 1}`] = new Map(await Assets.load(mapDefinition.filepath) as string, tilesetName, app)
+);
+console.log(maps);
 Object.values(maps).forEach((map: Map) => {
   dazel.subscribe(map);
 });
-
-maps.map1.North = maps.map2;
-maps.map2.South = maps.map1;
 
 const collisionSpecifications: Array<[number, TypeCollision]> = [
   [13, "BottomRightTriangle"],
@@ -130,7 +118,6 @@ const collisionSpecifications: Array<[number, TypeCollision]> = [
   [92, "Square"],
   [93, "BottomLeftTriangle"],
 ]
-
 maps.map1.draw(collisionSpecifications);
 
 
