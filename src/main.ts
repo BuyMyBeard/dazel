@@ -63,15 +63,15 @@ const dazelAnimation: Animations = {
 
 const tilesetName = "plain-tileset";
 const dazel = new Player(app, dazelAnimation, new Vect2D(200, 200))
-const maps : { [id: string] : Map} = {
-  map1 : new Map(mapAssets.map1, tilesetName, app),
-  map2 : new Map(mapAssets.map2, tilesetName, app),
-  map3 : new Map(mapAssets.map3, tilesetName, app),
-  map4 : new Map(mapAssets.map4, tilesetName, app),
-  map5 : new Map(mapAssets.map5, tilesetName, app),
-  map6 : new Map(mapAssets.map6, tilesetName, app),
-  map7 : new Map(mapAssets.map7, tilesetName, app),
-  map8 : new Map(mapAssets.map8, tilesetName, app),
+const maps: { [id: string]: Map } = {
+  map1: new Map(mapAssets.map1, tilesetName, app),
+  map2: new Map(mapAssets.map2, tilesetName, app),
+  map3: new Map(mapAssets.map3, tilesetName, app),
+  map4: new Map(mapAssets.map4, tilesetName, app),
+  map5: new Map(mapAssets.map5, tilesetName, app),
+  map6: new Map(mapAssets.map6, tilesetName, app),
+  map7: new Map(mapAssets.map7, tilesetName, app),
+  map8: new Map(mapAssets.map8, tilesetName, app),
 }
 
 Object.values(maps).forEach((map: Map) => {
@@ -100,9 +100,35 @@ const collisionSpecifications: Array<[number, TypeCollision]> = [
   [53, "TopRightTriangle"],
   [54, "Square"],
   [55, "TopLeftTriangle"],
-  [56, "TopLeftTriangle"],
-  [57, "Square"],
+  [56, "Square"],
+  [64, "Square"],
   [65, "Square"],
+  [66, "Square"],
+  [67, "Square"],
+  [68, "Square"],
+  [69, "Square"],
+  [70, "Square"],
+  [71, "Square"],
+  [72, "Square"],
+  [73, "Square"],
+  [74, "Square"],
+  [75, "Square"],
+  [76, "Square"],
+  [77, "Square"],
+  [78, "Square"],
+  [79, "Square"],
+  [82, "Square"],
+  [83, "Square"],
+  [84, "Square"],
+  [85, "Square"],
+  [86, "Square"],
+  [87, "Square"],
+  [88, "Square"],
+  [89, "Square"],
+  [90, "Square"],
+  [91, "BottomLeftTriangle"],
+  [92, "Square"],
+  [93, "BottomLeftTriangle"],
 ]
 
 maps.map1.draw(collisionSpecifications);
