@@ -57,7 +57,7 @@ export abstract class Entity {
    * @param movement 
    * @returns true if successful, false otherwise
    */
-  public move(movement: IPoint) : boolean {
+  public move(movement: IPoint): boolean {
     let newPosition = (movement as Vect2D).add(this.position);
     if (!this.warnSubs(newPosition)) {
       this.position = newPosition;
@@ -76,15 +76,15 @@ export abstract class Entity {
       Entity.player = this;
     }
   }
-  public moveToTop(app: Application) {
-    app.stage.removeChild(this.sprite);
-    app.stage.addChild(this.sprite);
+  public moveToTop() {
+    Map.app.stage.removeChild(this.sprite);
+    Map.app.stage.addChild(this.sprite);
   }
 
   public debug() {
     const g: Graphics = new Graphics();
     g.beginFill(0x0000FF);
-    g.drawCircle(0,0, 1);
+    g.drawCircle(0, 0, 1);
     g.endFill();
     g.alpha = 0.8;
     g.scale.set(0.5);

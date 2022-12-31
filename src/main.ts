@@ -66,7 +66,7 @@ const slime1 = new Slime(slimeAnimation, new Vect2D(250, 250), "Up");
 const tilesetName = "plain-tileset";
 const maps: { [id: string]: Map } = {};
 const loadMapAssets = Object.values(mapAssets).map(async (mapDefinition: any, index) => {
-  const map = new Map(await Assets.load(mapDefinition.filepath) as string, tilesetName, app);
+  const map = new Map(await Assets.load(mapDefinition.filepath) as string, tilesetName);
   maps[`map${index + 1}`] = map;
   return map;
 });
@@ -95,11 +95,12 @@ Promise.all(loadMapAssets).then(() => {
   app.stage.addChild(directionDebug);
   slime1.debug();
   dazel.debug();
-  dazel.moveToTop(app);
-
+  dazel.moveToTop();
+  slime1.moveToTop()
   app.ticker.add(delta => updateLoop(delta));
   function updateLoop(_: number) {
     dazel.update();
+    slime1.update();
     if (dazel.State != state) {
       state = dazel.State;
       stateDebug.text = "dazel.State : " + state;

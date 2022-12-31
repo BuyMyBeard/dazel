@@ -9,8 +9,8 @@ import { InputReader } from "./InputReader";
 export class Player extends Character {
   private attackFramesTicker: Ticker = new Ticker();
 
-  changeMap(app: Application, cardinalDirection: CardinalDirection) {
-    this.moveToTop(app);
+  changeMap(cardinalDirection: CardinalDirection) {
+    this.moveToTop();
     switch (cardinalDirection) {
       case "East":
         this.position.x = 10;
@@ -30,7 +30,7 @@ export class Player extends Character {
   }
 
   constructor(animations: Animations, position: IPoint = new Vect2D) {
-    super(animations.Idle.Down, position,animations)
+    super(animations.Idle.Down, position, animations)
     this.init();
     this.sprite.anchor.set(0.5, 0.9);
     this.attackFramesTicker.add(this.checkAttackRange, this);
@@ -105,9 +105,9 @@ export class Player extends Character {
       this.attackHitboxVisualisation = undefined;
       return;
     }
-    const attackLocation : Vect2D = Vect2D.fromDirection(this.Direction).multiply(this.range).add(this.position);
+    const attackLocation: Vect2D = Vect2D.fromDirection(this.Direction).multiply(this.range).add(this.position);
     if (this.attackHitboxVisualisation == undefined) {
-      const g : Graphics = new Graphics();
+      const g: Graphics = new Graphics();
       g.beginFill(0xAAAA00);
       g.drawCircle(attackLocation.x, attackLocation.y, this.aoeRange);
       g.endFill();
