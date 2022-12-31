@@ -110,7 +110,7 @@ Promise.all(loadMapAssets).then(() => {
   Object.values(maps).forEach((map, index) => {
     map.subscribeNeighbors(mapNetwork[`map${index + 1}`]);
   })
-  console.log(maps.map1);
+
   maps.map1.draw(C.COLLISION_SPECIFICATIONS);
   const debugBackground: Graphics = new Graphics();
   debugBackground.beginFill(0x222222);
@@ -124,7 +124,7 @@ Promise.all(loadMapAssets).then(() => {
   let direction = dazel.Direction;
   Object.values(maps).forEach((map: Map) => {
     dazel.subscribe(map);
-    slime1.subscribe(map);
+    //slime1.subscribe(map);
   });
   const stateDebug = new Text("dazel.State : " + state, fontAssets.debug);
   const directionDebug = new Text("dazel.Direction : " + direction, fontAssets.debug);
@@ -133,8 +133,8 @@ Promise.all(loadMapAssets).then(() => {
   app.stage.addChild(directionDebug);
   slime1.debug();
   dazel.debug();
+  slime1.moveToTop();
   dazel.moveToTop();
-  slime1.moveToTop()
   app.ticker.add(delta => updateLoop(delta));
   function updateLoop(_: number) {
     dazel.update();

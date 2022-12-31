@@ -19,7 +19,7 @@ export class Map implements IPositionWatcher {
   public readonly width: number;
   public readonly height: number;
   private readonly tileset: String;
-  private active: boolean = false;
+  public active: boolean = false;
 
   public static app: Application;
 
@@ -40,14 +40,11 @@ export class Map implements IPositionWatcher {
     this.tileset = tileset;
   }
   /**
-   * 
+   * prerequisite: Map must be active
    * @param entity entity to check position of
    * @returns true if collision registered, false otherwise
    */
   warn(entity: Entity, newPosition: IPoint): boolean {
-    if (!this.active) {
-      return false;
-    }
     if (this.collisionMap.checkCollision(newPosition)) {
       return true;
     }
@@ -67,24 +64,24 @@ export class Map implements IPositionWatcher {
       if (!(entity instanceof Player)) {
         return true;
       }
-      console.log(this.neighbors[directionToLoad]);
-      (entity as Player).changeMap(directionToLoad);
+      console.log(newPosition);
       this.loadNext(this.neighbors[directionToLoad]);
+      (entity as Player).changeMap(directionToLoad);
     }
     return true; //position will already get updated by changeMap method
   }
   private loadNext(map: Map | undefined) {
-    if (map === null || map === undefined) {
-      throw "map not defined";
-      // return;
+    if (map === undefined) {
+      //throw "map not defined";
+      return;
     }
     this.active = false;
-    let content = Map.app.stage.removeChildren();
+    Map.app.stage.removeChildren();
     map.draw(this.collisionSpecifications);
+    
   }
   public subscribeNeighbors(mapNeighbors: MapNeighbors) {
     this.neighbors = mapNeighbors;
-    console.log(mapNeighbors);
   }
   private generateTileMap(mapFile: string): number[][] {
 
@@ -144,6 +141,7 @@ export class Map implements IPositionWatcher {
 }
 
 export interface IPositionWatcher {
+  active : boolean;
   warn(entity: Entity, newPosition: IPoint): boolean;
 }
 
@@ -216,3 +214,5 @@ class CollisionMap {
     return (linePoint2.x - linePoint1.x) * (point.y - linePoint1.y) - (linePoint2.y - linePoint1.y) * (point.x - linePoint1.x);
   }
 }
+console.log("stage width",C.STAGE_WIDTH);
+console.log("stage height",C.STAGE_HEIGHT)
