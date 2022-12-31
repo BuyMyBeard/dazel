@@ -1,5 +1,11 @@
 {
     "map": "../map1.txt",
+    "neighbors": {
+        "North": "map2",
+        "South": null,
+        "East": null,
+        "West": null
+    },
     "entities": {
         "slime1": {
             "name": "Slime",
