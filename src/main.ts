@@ -1,14 +1,11 @@
-
-
 import { Text, Application, Assets, SCALE_MODES, settings, Graphics, GraphicsGeometry } from 'pixi.js';
 import { Map, TypeCollision } from "./Map";
-import { Animations, Player } from "./Entity";
+import { Animations } from './Character';
+import { Player } from './Player';
 import { getTextureArray } from "./functions";
 import { InputReader } from './InputReader';
 import { Vect2D } from './Vect2D';
 import * as C from './Constants';
-
-
 
 const app = new Application({
   view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
@@ -106,8 +103,6 @@ const collisionSpecifications: Array<[number, TypeCollision]> = [
 ]
 
 maps.map1.draw(collisionSpecifications);
-
-
 
 const debugBackground: Graphics = new Graphics();
 

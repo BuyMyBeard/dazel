@@ -1,6 +1,7 @@
 import { Application, Sprite, IPoint } from "pixi.js";
 import * as C from "./Constants";
-import { Entity, Player } from "./Entity";
+import { Entity } from "./Entity";
+import { Player } from "./Player";
 import { Vect2D } from "./Vect2D";
 
 export type CardinalDirection = "North" | "South" | "East" | "West";
