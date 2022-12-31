@@ -61,16 +61,22 @@ const dazelAnimation: Animations = {
   None: null,
 }
 
-
+const tilesetName = "plain-tileset";
 const dazel = new Player(app, dazelAnimation, new Vect2D(200, 200))
 const maps : { [id: string] : Map} = {
-  map1 : new Map(mapAssets.map1, "plain-tileset", app),
-  map2 : new Map(mapAssets.map2, "plain-tileset", app),
+  map1 : new Map(mapAssets.map1, tilesetName, app),
+  map2 : new Map(mapAssets.map2, tilesetName, app),
+  map3 : new Map(mapAssets.map3, tilesetName, app),
+  map4 : new Map(mapAssets.map4, tilesetName, app),
+  map5 : new Map(mapAssets.map5, tilesetName, app),
+  map6 : new Map(mapAssets.map6, tilesetName, app),
+  map7 : new Map(mapAssets.map7, tilesetName, app),
+  map8 : new Map(mapAssets.map8, tilesetName, app),
 }
 
 Object.values(maps).forEach((map : Map) => {
   dazel.subscribe(map);
-})
+});
 
 maps.map1.North = maps.map2;
 maps.map2.South = maps.map1;
