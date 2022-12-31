@@ -1,4 +1,5 @@
 import type { IPoint, IPointData } from 'pixi.js'
+import { Direction } from './Entity';
 
 export class Vect2D implements IPoint {
   public x : number;
@@ -45,13 +46,13 @@ export class Vect2D implements IPoint {
     return this.x === vect2D.x && this.y === vect2D.y;
   }
 
-  public add(vect2D : IPoint) : IPoint {
+  public add(vect2D : IPoint) : Vect2D {
     this.x += vect2D.x;
     this.y += vect2D.y;
     return this;
   }
 
-  public static add(vec1 : IPoint, vec2 : IPoint) {
+  public static add(vec1 : IPoint, vec2 : IPoint) : Vect2D {
     return new Vect2D(vec1.x + vec2.x, vec1.y + vec2.y);
   }
 
@@ -63,9 +64,32 @@ export class Vect2D implements IPoint {
     this.y *= SIN45DEGREE;
   }
   
-  public multiply(scalar : number) : IPoint {
+  public multiply(scalar : number) : Vect2D {
     this.x *= scalar;
     this.y *= scalar;
     return this;
+  }
+
+  public distance(point : IPoint) : number {
+    return Math.sqrt((point.x - this.x) ** 2 + (point.y - this.y) ** 2);
+  }
+
+  public static fromDirection(direction : Direction) : Vect2D {
+    switch (direction) {
+      case "Down":
+        return Vect2D.down();
+
+      case "Up":
+        return Vect2D.up();
+
+      case "Left":
+        return Vect2D.left();
+
+      case "Right":
+        return Vect2D.right();
+
+      case "None":
+        return Vect2D.zero();
+    }
   }
 }

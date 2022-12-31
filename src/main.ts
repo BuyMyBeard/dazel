@@ -1,4 +1,4 @@
-import { Text, Application, Assets, SCALE_MODES, settings, Graphics, GraphicsGeometry, filters } from 'pixi.js';
+import { Text, Application, Assets, SCALE_MODES, settings, Graphics, GraphicsGeometry, filters, Ticker } from 'pixi.js';
 import { Map, TypeCollision } from "./Map";
 import { Animations, SimpleAnimations } from './Character';
 import { Player } from './Player';
@@ -19,6 +19,7 @@ const app = new Application({
   antialias: false,
 });
 app.ticker.maxFPS = 60;
+Map.app = app;
 
 InputReader.initialize();
 settings.SCALE_MODE = SCALE_MODES.NEAREST;
@@ -29,11 +30,6 @@ const fontAssets = await Assets.loadBundle("fonts");
 const textureAssets = await Assets.loadBundle("textures");
 await Assets.loadBundle("tilesets");
 
-console.log(mapAssets);
-
-//const Plain_Tileset = generateTextures(tilesetAssets.plain_tileset, TILE_RESOLUTION, 160, 8);
-
-//map.draw(app, TILE_RESOLUTION, SCALE_MULTIPLIER);
 let name = "dazel";
 const dazelAnimation: Animations = {
   Walk: {
@@ -70,14 +66,14 @@ const slime1 = new Slime(app, slimeAnimation, new Vect2D(300,250));
 
 const tilesetName = "plain-tileset";
 const maps: { [id: string]: Map } = {
-  map1: new Map(mapAssets.map1, tilesetName, app),
-  map2: new Map(mapAssets.map2, tilesetName, app),
-  map3: new Map(mapAssets.map3, tilesetName, app),
-  map4: new Map(mapAssets.map4, tilesetName, app),
-  map5: new Map(mapAssets.map5, tilesetName, app),
-  map6: new Map(mapAssets.map6, tilesetName, app),
-  map7: new Map(mapAssets.map7, tilesetName, app),
-  map8: new Map(mapAssets.map8, tilesetName, app),
+  map1: new Map(mapAssets.map1, tilesetName),
+  map2: new Map(mapAssets.map2, tilesetName),
+  map3: new Map(mapAssets.map3, tilesetName),
+  map4: new Map(mapAssets.map4, tilesetName),
+  map5: new Map(mapAssets.map5, tilesetName),
+  map6: new Map(mapAssets.map6, tilesetName),
+  map7: new Map(mapAssets.map7, tilesetName),
+  map8: new Map(mapAssets.map8, tilesetName),
 }
 
 Object.values(maps).forEach((map: Map) => {
@@ -110,6 +106,7 @@ dazel.moveToTop(app);
 app.ticker.add(delta => updateLoop(delta));
 function updateLoop(_: number) {
   dazel.update();
+  slime1.update();
   if (dazel.State != state) {
     state = dazel.State;
     stateDebug.text = "dazel.State : " + state;
@@ -122,3 +119,5 @@ function updateLoop(_: number) {
 
 app.stage.addChild(stateDebug);
 app.stage.addChild(directionDebug);
+
+slime1.debug();

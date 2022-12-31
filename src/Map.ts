@@ -16,7 +16,7 @@ export class Map implements IPositionWatcher {
   private readonly tileset: String;
   private active: boolean = false;
 
-  private app: Application;
+  public static app: Application;
 
   public North: Map | null = null;
   public South: Map | null = null;
@@ -28,12 +28,11 @@ export class Map implements IPositionWatcher {
    * @param map loaded asset
    * @param tileset name of tileset in assets (without the extension)
    */
-  public constructor(mapFile: string, tileset: String, app: Application) {
+  public constructor(mapFile: string, tileset: String) {
     this.tileMap = this.generateTileMap(mapFile)
     this.width = this.tileMap[0].length;
     this.height = this.tileMap.length;
     this.tileset = tileset;
-    this.app = app;
   }
   /**
    * 
@@ -47,8 +46,8 @@ export class Map implements IPositionWatcher {
     if (this.collisionMap.checkCollision(newPosition)) {
       return true;
     }
-    if (entity !instanceof Player) {
-      return false;
+    if (!(entity instanceof Player)) {
+      
     }
     let directionToLoad: CardinalDirection;
     if (entity.position.x < 0) {
@@ -63,7 +62,7 @@ export class Map implements IPositionWatcher {
       return false;
     }
     this.loadNext(this[directionToLoad]);
-    (entity as Player).changeMap(this.app, directionToLoad);
+    (entity as Player).changeMap(Map.app, directionToLoad);
     console.log(this[directionToLoad]);
     return true; //position will already get updated by changeMap method
   }
@@ -72,7 +71,7 @@ export class Map implements IPositionWatcher {
       throw "map not defined";
     }
     this.active = false;
-    let content = this.app.stage.removeChildren();
+    let content = Map.app.stage.removeChildren();
     map.draw(this.collisionSpecifications);
   }
 
@@ -118,7 +117,7 @@ export class Map implements IPositionWatcher {
         const pos = new Vect2D(C.TILE_RESOLUTION * C.SCALE_MULTIPLIER * j, C.TILE_RESOLUTION * C.SCALE_MULTIPLIER * i);
         sprite.position = pos;
         sprite.scale.set(C.SCALE_MULTIPLIER);
-        this.app.stage.addChild(sprite);
+        Map.app.stage.addChild(sprite);
         if (fillCollisionMap) {
           for (let tuple of collisionSpecifications) {
             if (id == tuple[0]) {

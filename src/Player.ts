@@ -1,14 +1,15 @@
 import { Character, Animations } from "./Character";
-import { Application, IPoint } from "pixi.js";
-import { CardinalDirection } from "./Map";
-import { Direction } from "./Entity";
+import { Application, DisplayObject, Graphics, IPoint, Ticker } from "pixi.js";
+import { CardinalDirection, Map } from "./Map";
+import { Direction, Entity } from "./Entity";
 import * as C from "./Constants";
 import { Vect2D } from "./Vect2D";
 import { InputReader } from "./InputReader";
 
 export class Player extends Character {
-  
-  changeMap(app : Application, cardinalDirection : CardinalDirection) {
+  private attackFramesTicker: Ticker = new Ticker();
+
+  changeMap(app: Application, cardinalDirection: CardinalDirection) {
     this.moveToTop(app);
     switch (cardinalDirection) {
       case "East":
@@ -27,64 +28,98 @@ export class Player extends Character {
         this.position.y = 30;
     }
   }
-  
-  constructor(app : Application, animations : Animations, position : IPoint = new Vect2D, hp : number = 3, speed : number = 2) {
+
+  constructor(app: Application, animations: Animations, position: IPoint = new Vect2D, hp: number = 3, speed: number = 2) {
     super(app, animations.Idle.Down, position, hp, speed, animations)
     this.init();
     this.sprite.anchor.set(0.5, 0.9);
+    this.attackFramesTicker.add(this.checkAttackRange, this);
+    this.range = 30;
+    this.aoeRange = 15;
   }
-  
+
   public update() {
     if (this.state == "Attack") {
       return;
     }
 
-    let movement : Vect2D = Vect2D.zero();
-    let direction : Direction = "None";
+    let movement: Vect2D = Vect2D.zero();
+    let direction: Direction = "None";
     switch (InputReader.currentInput) {
       case "Up":
         movement.add(Vect2D.up());
         direction = "Up";
         break;
-        
+
       case "Down":
         movement.add(Vect2D.down());
         direction = "Down";
         break;
-          
+
       case "Left":
         movement.add(Vect2D.left());
         direction = "Left";
         break;
-            
+
       case "Right":
         movement.add(Vect2D.right());
         direction = "Right";
         break;
-              
+
       case "Attack":
         this.Attack();
         break;
-        
+
       case "Interact":
         //interact
         break;
-      }
-      if (this.state == "Walk" && direction == "None") {
-        this.state = "Idle";
-        this.updateAnimation();
-      } else if ((direction != this.direction && direction != "None") || (direction == this.direction && this.state == "Idle")) {
-        this.direction = direction;
-        this.state = "Walk";
-        this.updateAnimation();
-      }
-      
-      movement.multiply(this.speed);
-      this.move(movement);
     }
-    
-    protected override Attack(): void {
-      super.Attack();
-      
+    if (this.state == "Walk" && direction == "None") {
+      this.state = "Idle";
+      this.updateAnimation();
+    } else if ((direction != this.direction && direction != "None") || (direction == this.direction && this.state == "Idle")) {
+      this.direction = direction;
+      this.state = "Walk";
+      this.updateAnimation();
+    }
+
+    movement.multiply(this.speed);
+    this.move(movement);
+  }
+
+  protected override Attack(): void {
+    super.Attack();
+    this.attackFramesTicker.start();
+  }
+  private checkAttackRange() { //callback
+    const currentFrame = this.animatedSprite.currentFrame;
+    if (currentFrame == 0) {
+      return;
+    }
+    if (currentFrame == 4) {
+      this.attackFramesTicker.stop();
+      Map.app.stage.removeChild(this.attackHitboxVisualisation as DisplayObject)
+      this.attackHitboxVisualisation = undefined;
+      return;
+    }
+    const attackLocation : Vect2D = Vect2D.fromDirection(this.Direction).multiply(this.range).add(this.position);
+    if (this.attackHitboxVisualisation == undefined) {
+      const g : Graphics = new Graphics();
+      g.beginFill(0xAAAA00);
+      g.drawCircle(attackLocation.x, attackLocation.y, this.aoeRange);
+      g.endFill();
+      g.alpha = 0.4;
+      Map.app.stage.addChild(g);
+      this.attackHitboxVisualisation = g;
+    }
+    for (const entity of Entity.pool) {
+      if (entity == this || !(entity instanceof Character)) { //to modify if we add destroyable non-characters
+        continue;
+      }
+      if (attackLocation.distance(entity.position) < this.range) {
+        entity.takeDamage();
+      }
     }
   }
+}
+
