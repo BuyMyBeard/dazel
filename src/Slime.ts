@@ -8,8 +8,11 @@ export class Slime extends Character {
   public static animation : SimpleAnimations;
   private static readonly SPEED = 1;
   private static readonly HP = 3;
-  public constructor(animations : SimpleAnimations, position : IPoint, initialDirection : Direction) {
-    super(animations.Walk, position, undefined, animations);
+  public constructor(position : IPoint, initialDirection : Direction) {
+    if (Slime.animation == undefined) {
+      throw "animation not initialized";
+    }
+    super(Slime.animation.Walk, position, undefined, Slime.animation);
     this.init();
     this.sprite.anchor.set(0.5, 0.5);
     this.filterInfo.loops = 1;

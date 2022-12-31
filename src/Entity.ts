@@ -1,4 +1,4 @@
-import { IPoint, Sprite, Application, Graphics } from "pixi.js";
+import { IPoint, Sprite, Application, Graphics, Ticker } from "pixi.js";
 import { Vect2D } from "./Vect2D";
 import { IPositionWatcher } from "./Map";
 import { Player } from "./Player";

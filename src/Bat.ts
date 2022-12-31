@@ -5,7 +5,7 @@ import { Vect2D } from "./Vect2D";
 import { Entity } from "./Entity";
 
 export class Bat extends Character {
-  public static animations : SimpleAnimations;
+  public static animation : SimpleAnimations;
   static readonly HP = 3;
   static readonly SPEED = 0.5;
   private readonly idleTicker : Ticker = new Ticker();
@@ -23,8 +23,11 @@ export class Bat extends Character {
       this.move(Vect2D.unit(this.position, playerPosition).multiply(this.speed));
     }
   }
-  public constructor(animations : SimpleAnimations, position : IPoint) {
-    super(animations.Walk, position, undefined, animations);
+  public constructor(position : IPoint) {
+    if (Bat.animation == undefined) {
+      throw "animation not initialized";
+    }
+    super(Bat.animation.Walk, position, undefined, Bat.animation);
     this.init();
     this.sprite.anchor.set(0.5, 0.5);
     this.filterInfo.loops = 1;

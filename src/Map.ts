@@ -1,4 +1,5 @@
 import { Application, Sprite, IPoint } from "pixi.js";
+import { Bat } from "./Bat";
 import * as C from "./Constants";
 import { Entity } from "./Entity";
 import { Player } from "./Player";
@@ -12,6 +13,8 @@ export type MapNetwork = {
   [key: string]: MapNeighbors
 }
 export class Map implements IPositionWatcher {
+  public static maps : { [id: string]: Map };
+  public id : number;
   private tileMap: number[][];
   private collisionMap: CollisionMap = new CollisionMap;
   public collisionSpecifications: Array<[number, TypeCollision]> = [];
@@ -33,11 +36,12 @@ export class Map implements IPositionWatcher {
    * @param map loaded asset
    * @param tileset name of tileset in assets (without the extension)
    */
-  public constructor(mapFile: string, tileset: String) {
+  public constructor(id : number, mapFile: string, tileset: String) {
     this.tileMap = this.generateTileMap(mapFile)
     this.width = this.tileMap[0].length;
     this.height = this.tileMap.length;
     this.tileset = tileset;
+    this.id = id;
   }
   /**
    * prerequisite: Map must be active
@@ -136,9 +140,17 @@ export class Map implements IPositionWatcher {
         }
       }
     }
+    if (this.id != 1) {
+      this.populate();
+    }
   }
-
+  private populate() {
+    switch (this.id) {
+      
+    }
+  }
 }
+
 
 export interface IPositionWatcher {
   active : boolean;

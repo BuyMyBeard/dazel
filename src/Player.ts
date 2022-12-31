@@ -11,6 +11,8 @@ export class Player extends Character {
   private attackFramesTicker: Ticker = new Ticker();
 
   changeMap(cardinalDirection: CardinalDirection) {
+    Entity.pool = [];
+    Entity.pool.push(this);
     this.moveToTop();
     switch (cardinalDirection) {
       case "East":
@@ -31,8 +33,11 @@ export class Player extends Character {
     console.log(this.position);
   }
 
-  constructor(animations: Animations, position: IPoint = new Vect2D) {
-    super(animations.Idle.Down, position, animations)
+  constructor(position: IPoint = new Vect2D) {
+    if (Player.animation == undefined) {
+      throw "animation not initialized";
+    }
+    super(Player.animation.Idle.Down, position, Player.animation)
     this.init();
     this.sprite.anchor.set(0.5, 0.9);
     this.attackFramesTicker.add(this.checkAttackRange, this);
@@ -103,20 +108,20 @@ export class Player extends Character {
     }
     if (currentFrame == 4) {
       this.attackFramesTicker.stop();
-      Map.app.stage.removeChild(this.attackHitboxVisualisation as DisplayObject)
+      // Map.app.stage.removeChild(this.attackHitboxVisualisation as DisplayObject)
       this.attackHitboxVisualisation = undefined;
       return;
     }
     const attackLocation: Vect2D = Vect2D.fromDirection(this.Direction).multiply(this.range).add(this.position);
-    if (this.attackHitboxVisualisation == undefined) {
-      const g: Graphics = new Graphics();
-      g.beginFill(0xAAAA00);
-      g.drawCircle(attackLocation.x, attackLocation.y, this.aoeRange);
-      g.endFill();
-      g.alpha = 0.4;
-      Map.app.stage.addChild(g);
-      this.attackHitboxVisualisation = g;
-    }
+    // if (this.attackHitboxVisualisation == undefined) {
+    //   const g: Graphics = new Graphics();
+    //   g.beginFill(0xAAAA00);
+    //   g.drawCircle(attackLocation.x, attackLocation.y, this.aoeRange);
+    //   g.endFill();
+    //   g.alpha = 0.4;
+    //   Map.app.stage.addChild(g);
+    //   this.attackHitboxVisualisation = g;
+    // }
     for (const entity of Entity.pool) {
       if (entity == this || !(entity instanceof Character)) { //to modify if we add destroyable non-characters
         continue;
