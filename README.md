@@ -8,7 +8,7 @@ The game can be played [here](https://buymybeard.itch.io/dazel-the-gazelle).
 ## Implementation Challenges
 This was our first time working with Typescript and a bundler, and the experience was great,
 ~~Except for the fact our boilerplate was broken and had dependencies conflicts that created nightmare bugs~~
-We had to migrate the project from [pixi-hotwire](https://github.com/miltoncandelero/pixi-hotwire) previous-to-last version to the latest, which happened to get updated in the middle of the jam.
+We had to migrate the project from [pixi-hotwire](https://github.com/miltoncandelero/pixi-hotwire) previous-to-last version to the latest, which happened to get updated in middle of the jam.
 
 I designed an Input Reader and a Collision Detector specifically for this game, which was an interesting challenge. It is not very efficient, but it is pretty easily extensible.
 
