@@ -24,7 +24,6 @@ export class KeysPressed {
   public any() : Boolean {
     return Object.values(this).some(val => val);
   }
-
 }
 
 export type inputTypes = "Up" | "Down" | "Left" | "Right" | "Attack" | "Interact" | "Pause" | "None" ;
@@ -39,59 +38,33 @@ export class InputReader {
     document.addEventListener('keyup', this.onKeyUp);
   }
 
-  public static currentInput : inputTypes = 'None';
+  public static get currentInput() : inputTypes {
+    if (this.inputStack.length == 0) {
+      return 'None'
+    }
+    return this.inputStack[0];
+  }
+  private static inputStack : Array<inputTypes> = [];
 
   public static onKeyDown(e : any) {
-    let inputType : inputTypes = 'None';
-    switch (e.key) {
-      case 'w':
-      case 'ArrowUp':
-        inputType = "Up";
-        break;
-  
-      case 'a':
-      case 'ArrowLeft':
-        inputType = "Left";
-        break;
-  
-      case 'd':
-      case 'ArrowRight':
-        inputType = "Right";
-        break;
-  
-      case 's':
-      case 'ArrowDown':
-        inputType = "Down";
-        break;
-  
-      case 'p':
-      case 'Escape':
-        inputType = "Pause";
-        break;
-  
-      case 'Enter':
-      case ' ':
-        inputType = "Attack";
-        break;
-    
-      case 'e':
-      case 'Control':
-        inputType = "Interact";
-        break;
-        
-      default:
-        return;
-      
+    let inputType : inputTypes = InputReader.keyToInputType(e.key);
+    if (inputType != 'None' && InputReader.inputStack.indexOf(inputType) == -1) {
+      InputReader.inputStack.unshift(inputType);
     }
-    if (!InputReader.keysPressed[inputType]) {
-      InputReader.currentInput = inputType;
-      InputReader.keysPressed[inputType] = true;
-    }
-    
+    console.log(InputReader.inputStack);
   }
+
   public static onKeyUp(e : any) {
+    let inputType : inputTypes = InputReader.keyToInputType(e.key);
+    if (inputType != 'None') {
+      InputReader.inputStack = InputReader.inputStack.filter(input => input != inputType);
+    }
+    console.log(InputReader.inputStack);
+  }
+
+  private static keyToInputType(key : string) : inputTypes {
     let inputType : inputTypes = 'None';
-    switch (e.key) {
+    switch (key) {
       case 'w':
       case 'ArrowUp':
         inputType = "Up";
@@ -128,18 +101,9 @@ export class InputReader {
         break;
   
       default:
-        return;
+        inputType = "None";
+        break;
     }
-    if (InputReader.keysPressed[inputType]) {
-      InputReader.keysPressed[inputType] = false;
-    }
-    if (inputType === InputReader.currentInput) {
-      InputReader.currentInput = 'None';
-      // if (InputReader.keysPressed.None) {
-      //   InputReader.currentInput = 'None';
-      // } else {
-
-      // }
-    }
+    return inputType;
   }
 }
