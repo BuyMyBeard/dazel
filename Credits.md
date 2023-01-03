@@ -1,11 +1,11 @@
 # Credits
 ### Game Design
 - BuyMybeard
-- Dr.Seek
+- Dr. Seek
 ### Programming
 - BuyMyBeard
-- Dr.Seek
+- Dr. Seek
 ### Level Design
-- Dr.Seek
+- Dr. Seek
 ### Art
 - BuyMyBeard
