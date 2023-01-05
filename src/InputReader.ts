@@ -51,7 +51,6 @@ export class InputReader {
     if (inputType != 'None' && InputReader.inputStack.indexOf(inputType) == -1) {
       InputReader.inputStack.unshift(inputType);
     }
-    console.log(InputReader.inputStack);
   }
 
   public static onKeyUp(e : any) {
@@ -59,7 +58,6 @@ export class InputReader {
     if (inputType != 'None') {
       InputReader.inputStack = InputReader.inputStack.filter(input => input != inputType);
     }
-    console.log(InputReader.inputStack);
   }
 
   private static keyToInputType(key : string) : inputTypes {
