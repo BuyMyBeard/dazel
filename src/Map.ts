@@ -16,7 +16,7 @@ export class Map implements IPositionWatcher {
   public static maps : { [id: string]: Map };
   public id : number;
   private tileMap: number[][];
-  private collisionMap: CollisionMap = new CollisionMap;
+  private collisionMap: CollisionMap;
   public collisionSpecifications: Array<[number, TypeCollision]> = [];
   private neighbors: MapNeighbors | undefined;
   public readonly width: number;
@@ -36,12 +36,14 @@ export class Map implements IPositionWatcher {
    * @param map loaded asset
    * @param tileset name of tileset in assets (without the extension)
    */
-  public constructor(id : number, mapFile: string, tileset: String) {
-    this.tileMap = this.generateTileMap(mapFile)
+  public constructor(id : number, mapFile: string, tileset: String, collisionSpecifications : Array<[number, TypeCollision]>) {
+    this.tileMap = this.generateTileMap(mapFile);
+    this.collisionMap = new CollisionMap(this.tileMap, collisionSpecifications);
     this.width = this.tileMap[0].length;
     this.height = this.tileMap.length;
     this.tileset = tileset;
     this.id = id;
+    
   }
   /**
    * prerequisite: Map must be active
@@ -81,7 +83,7 @@ export class Map implements IPositionWatcher {
     }
     this.active = false;
     Map.app.stage.removeChildren();
-    map.draw(this.collisionSpecifications);
+    map.draw();
     
   }
   public subscribeNeighbors(mapNeighbors: MapNeighbors) {
@@ -116,11 +118,7 @@ export class Map implements IPositionWatcher {
     console.log("height : " + this.height);
   }
 
-  public draw(collisionSpecifications: Array<[number, TypeCollision]> = []) {
-    if (collisionSpecifications.length != 0) {
-      this.collisionSpecifications = collisionSpecifications;
-    }
-    let fillCollisionMap: boolean = this.collisionMap.empty() && this.collisionSpecifications.length != 0;
+  public draw() {
     this.active = true;
     for (let i = 0; i < this.tileMap.length; i++) {
       for (let j = 0; j < this.tileMap[0].length; j++) {
@@ -130,14 +128,7 @@ export class Map implements IPositionWatcher {
         sprite.position = pos;
         sprite.scale.set(C.SCALE_MULTIPLIER);
         Map.app.stage.addChild(sprite);
-        if (fillCollisionMap) {
-          for (let tuple of collisionSpecifications) {
-            if (id == tuple[0]) {
-              this.collisionMap.addSolidTile(pos, tuple[1]);
-              break;
-            }
-          }
-        }
+
       }
     }
     if (this.id != 1) {
@@ -162,32 +153,50 @@ class CollisionMap {
   public empty(): boolean {
     return this.solidTiles.length == 0;
   }
-  public solidTiles: Array<[IPoint, TypeCollision]> = [];
+  private solidTiles : TypeCollision[][] = [];
 
-  public addSolidTile(position: IPoint, typeCollision: TypeCollision) {
-    this.solidTiles.push([position, typeCollision]);
-  }
-
-  public checkCollision(position: IPoint): boolean {
-    for (const tile of this.solidTiles) {
-      if (this.isInsideTile(position, tile)) {
-        return true;
+  public constructor(tileMap : number[][], collisionSpecifications : Array<[number, TypeCollision]>) {
+    for (let i = 0; i < tileMap.length; i++) {
+      this.solidTiles[i] = [];
+      for (let j = 0; j < tileMap[0].length; j++) {
+        for (const collision of collisionSpecifications) {
+          if (collision[0] == tileMap[i][j]) {
+            this.solidTiles[i][j] = collision[1];
+            break;
+          }
+        }
       }
     }
-    return false;
   }
 
-  public isInsideTile(position: IPoint, tile: [IPoint, TypeCollision]): boolean {
-    const x0y0 = tile[0];
-    const x1y0 = Vect2D.add(tile[0], new Vect2D(C.REAL_TILE_RESOLUTION, 0));
-    const x0y1 = Vect2D.add(tile[0], new Vect2D(0, C.REAL_TILE_RESOLUTION));
-    const x1y1 = Vect2D.add(tile[0], new Vect2D(C.REAL_TILE_RESOLUTION, C.REAL_TILE_RESOLUTION));
+
+  public checkCollision(position: IPoint): boolean {
+    const tileX = Math.floor(position.x / C.REAL_TILE_RESOLUTION);
+    if (tileX < 0 || tileX >= this.solidTiles[0].length) {
+      return false;
+    }
+    const tileY = Math.floor(position.y / C.REAL_TILE_RESOLUTION);
+    if (tileY < 0 || tileY >= this.solidTiles.length) {
+      return false;
+    }
+    const collision = this.solidTiles[tileY][tileX];
+    if (collision == undefined) {
+      return false;
+    }
+    return this.isInsideTile(position, new Vect2D(tileX * C.REAL_TILE_RESOLUTION, tileY * C.REAL_TILE_RESOLUTION), collision);
+  }
+
+  public isInsideTile(position: IPoint, tilePosition: IPoint, tileCollision : TypeCollision): boolean {
+    const x0y0 = tilePosition;
+    const x1y0 = Vect2D.add(tilePosition, new Vect2D(C.REAL_TILE_RESOLUTION, 0));
+    const x0y1 = Vect2D.add(tilePosition, new Vect2D(0, C.REAL_TILE_RESOLUTION));
+    const x1y1 = Vect2D.add(tilePosition, new Vect2D(C.REAL_TILE_RESOLUTION, C.REAL_TILE_RESOLUTION));
     const x0 = x0y0.x;
     const x1 = x1y0.x;
     const y0 = x0y0.y;
     const y1 = x0y1.y;
 
-    switch (tile[1]) {
+    switch (tileCollision) {
       case "Square":
         return position.x >= x0
           && position.y >= y0

@@ -77,7 +77,7 @@ const tilesetName = "plain-tileset";
 const maps: { [id: string]: Map } = {};
 
 const loadMapAssets = Object.values(mapAssets).map(async (mapDefinition: any, index) => {
-  const map = new Map(index + 1, await Assets.load(mapDefinition.filepath) as string, tilesetName);
+  const map = new Map(index + 1, await Assets.load(mapDefinition.filepath) as string, tilesetName, C.COLLISION_SPECIFICATIONS);
   maps[`map${index + 1}`] = map;
   return map;
 });
@@ -124,7 +124,7 @@ Promise.all(loadMapAssets).then(() => {
     map.subscribeNeighbors(mapNetwork[`map${index + 1}`]);
   })
 
-  maps.map1.draw(C.COLLISION_SPECIFICATIONS);
+  maps.map1.draw();
 
   Object.values(maps).forEach((map: Map) => {
     dazel.subscribe(map);
