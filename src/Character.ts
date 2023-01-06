@@ -74,7 +74,6 @@ export abstract class Character extends Entity {
   public static isSimpleAnimations(animations : Animations | SimpleAnimations) {
     return (Object.keys(animations).length < 4);
   }
-  public abstract update() : void;
 
   public takeDamage() {
     if (this.damaged) {

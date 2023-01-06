@@ -100,4 +100,11 @@ export abstract class Entity {
     this.inDebug = true;
     this.sprite.addChild(g);
   }
+  public abstract update() : void;
+
+  public static update() {
+    for (const entity of Entity.pool) {
+      entity.update();
+    }
+  }
 }

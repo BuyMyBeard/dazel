@@ -130,10 +130,8 @@ export class Map implements IPositionWatcher {
         Map.app.stage.addChild(sprite);
 
       }
-    }
-    if (this.id != 1) {
-      this.populate();
-    }
+    } 
+    this.populate();
   }
   private populate() {
     switch (this.id) {
