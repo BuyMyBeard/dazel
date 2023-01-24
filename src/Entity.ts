@@ -20,6 +20,8 @@ export abstract class Entity {
   protected anchorVisualisation?: Graphics = undefined;
   protected inDebug: boolean = false;
 
+  abstract takeDamage() : void;
+
   public subscribe(watcher: IPositionWatcher) {
     this.subs.push(watcher);
   }
@@ -106,5 +108,10 @@ export abstract class Entity {
     for (const entity of Entity.pool) {
       entity.update();
     }
+  }
+  public destroy() {
+    Map.app.stage.removeChild(this.sprite);
+    const entityToDestroy = this;
+    Entity.pool = Entity.pool.filter(entity => entity != entityToDestroy);
   }
 }

@@ -52,12 +52,23 @@ export class Vect2D implements IPoint {
     return this.x === vect2D.x && this.y === vect2D.y;
   }
 
+  /**
+   * Adds a vector to this instance
+   * @param vect2D Vector to add to this
+   * @returns This instance
+   */
   public add(vect2D : IPoint) : Vect2D {
     this.x += vect2D.x;
     this.y += vect2D.y;
     return this;
   }
 
+  /**
+   * Creates a new vector that is the result of the addition of 2 vectors
+   * @param vec1 
+   * @param vec2 
+   * @returns The resulting vector
+   */
   public static add(vec1 : IPoint, vec2 : IPoint) : Vect2D {
     return new Vect2D(vec1.x + vec2.x, vec1.y + vec2.y);
   }
@@ -70,18 +81,33 @@ export class Vect2D implements IPoint {
     this.y *= SIN45DEGREE;
   }
   
+  /**
+   * Multiply this vector instance by a scalar
+   * @param scalar Scalar to multiply the vector by
+   * @returns This vector instance
+   */
   public multiply(scalar : number) : Vect2D {
+    new Vect2D()
     this.x *= scalar;
     this.y *= scalar;
     return this;
   }
 
+  /**
+   * Creates a new vector that is the result of the scalar multiplication
+   * @param vect Vector to multiply
+   * @param scalar Scalar to multiply the vector by
+   * @returns The resulting vector
+   */
   public static multiply(vect : IPoint, scalar : number) : Vect2D {
     return new Vect2D(vect.x * scalar, vect.y * scalar);
   }
 
   public distance(point : IPoint) : number {
     return Math.sqrt((point.x - this.x) ** 2 + (point.y - this.y) ** 2);
+  }
+  public static distance(p1: IPoint, p2 : IPoint) : number {
+    return Math.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2);
   }
 
   public static fromDirection(direction : Direction) : Vect2D {
@@ -116,6 +142,12 @@ export class Vect2D implements IPoint {
     }
   }
 
+  /**
+   * unary vector going from p1 to p2
+   * @param p1 
+   * @param p2 
+   * @returns unary vector
+   */
   public static unit(p1 : IPoint, p2 : IPoint) {
     const delta = new Vect2D(p2.x - p1.x, p2.y - p1.y);
     return delta.multiply(1 / delta.norm);

@@ -53,3 +53,9 @@ export const COLLISION_SPECIFICATIONS: Array<[number, TypeCollision]> = [
   [92, "Square"],
   [97, "Square"],
 ]
+
+export const WATERTILES : Array<number> = [
+  65, 66, 67, 68, 69, 70,
+  73, 74, 75, 76, 77, 78,
+  81, 82, 83, 84, 85, 86,
+];

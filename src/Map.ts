@@ -13,6 +13,7 @@ export type MapNetwork = {
   [key: string]: MapNeighbors
 }
 export class Map implements IPositionWatcher {
+  public static readonly BOUNDARY_DISTANCE = 64;
   public static maps : { [id: string]: Map };
   public id : number;
   private tileMap: number[][];
@@ -45,6 +46,19 @@ export class Map implements IPositionWatcher {
     this.id = id;
     
   }
+  public get WaterTiles() {
+    const waterTiles : Array<Vect2D> = [];
+    for (let i = 0; i < this.tileMap.length; i++) {
+      for (let j = 0; j < this.tileMap[0].length; j++) {
+        if (C.WATERTILES.includes(this.tileMap[i][j])) {
+          waterTiles.push(new Vect2D(j, i));
+          continue;
+        }
+      }
+    }
+    return waterTiles;
+  }
+
   /**
    * prerequisite: Map must be active
    * @param entity entity to check position of
@@ -138,8 +152,23 @@ export class Map implements IPositionWatcher {
       
     }
   }
-}
 
+  public isOutsideBoundary(position : IPoint) {
+    return position.x < -Map.BOUNDARY_DISTANCE 
+        || position.y < -Map.BOUNDARY_DISTANCE 
+        || position.x > Map.BOUNDARY_DISTANCE + this.width * C.REAL_TILE_RESOLUTION
+        || position.y > Map.BOUNDARY_DISTANCE + this.height * C.REAL_TILE_RESOLUTION;
+  }
+
+  public static get CurrentMap() : Map { 
+    for (const map of Object.values(Map.maps)) {
+      if (map.active = true) {
+        return map;
+      }
+    }
+    throw "No currently active map";
+  }
+}
 
 export interface IPositionWatcher {
   active : boolean;
@@ -233,5 +262,3 @@ class CollisionMap {
     return (linePoint2.x - linePoint1.x) * (point.y - linePoint1.y) - (linePoint2.y - linePoint1.y) * (point.x - linePoint1.x);
   }
 }
-console.log("stage width",C.STAGE_WIDTH);
-console.log("stage height",C.STAGE_HEIGHT)

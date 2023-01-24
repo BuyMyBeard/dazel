@@ -33,7 +33,7 @@ export abstract class Character extends Entity {
 
   protected init(scale : number = 4) { // to make more flexible
     let anim = (this.sprite as AnimatedSprite);
-    anim.play()
+    anim.play();
     anim.animationSpeed = 0.2;
     this.sprite.scale.set(scale);
     this.sprite.filters = [this.damageFilter];
