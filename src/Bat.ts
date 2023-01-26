@@ -1,11 +1,11 @@
 import { Character } from "./Character";
-import { SimpleAnimations } from "./Character";
 import { IPoint, Graphics, Ticker } from "pixi.js";
 import { Vect2D } from "./Vect2D";
 import { Entity } from "./Entity";
+import { Texture } from "pixi.js";
 
 export class Bat extends Character {
-  public static animation : SimpleAnimations;
+  public static animation : Array<Texture>;
   static readonly HP = 3;
   static readonly SPEED = 0.5;
   private readonly idleTicker : Ticker = new Ticker();
@@ -27,7 +27,7 @@ export class Bat extends Character {
     if (Bat.animation == undefined) {
       throw "animation not initialized";
     }
-    super(Bat.animation.Walk, position, undefined, Bat.animation);
+    super(Bat.animation, position);
     this.init();
     this.sprite.anchor.set(0.5, 0.5);
     this.filterInfo.loops = 1;

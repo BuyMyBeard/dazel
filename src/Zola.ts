@@ -2,6 +2,8 @@
 // import { Map } from "./Map";
 // import { Vect2D } from "./Vect2D";
 
+import { Texture } from "pixi.js";
+
 // export class Zola extends Character {
 //   private static animation = undefined;
 //   private waterTiles : Array<Vect2D>;
@@ -26,3 +28,8 @@
 //     this.sprite.scale.set(3);
 //   }
 // }
+
+export type ZolaAnimation = {
+  waterExit: Array<Texture>,
+  idle: Array<Texture>,
+}

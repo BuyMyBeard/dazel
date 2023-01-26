@@ -1,7 +1,7 @@
 import { Application, Assets, SCALE_MODES, settings } from 'pixi.js';
 import { Map, MapNetwork } from "./Map";
-import { Animations, Character, SimpleAnimations } from './Character';
-import { Player } from './Player';
+import { Character } from './Character';
+import { Player, PlayerAnimation } from './Player';
 import { getTextureArray } from "./functions";
 import { InputReader } from './InputReader';
 import { Vect2D } from './Vect2D';
@@ -32,7 +32,7 @@ const textureAssets = await Assets.loadBundle("textures");
 await Assets.loadBundle("tilesets");
 
 let name = "dazel";
-const dazelAnimation: Animations = {
+const dazelAnimation: PlayerAnimation = {
   Walk: {
     Down: getTextureArray(name, 0, 4),
     Up: getTextureArray(name, 9, 4),
@@ -57,14 +57,11 @@ const dazelAnimation: Animations = {
   None: null,
 }
 name = "slime";
-const slimeAnimation: SimpleAnimations = {
-  Walk: getTextureArray(name, 0, 8),
-};
+const slimeAnimation = getTextureArray(name, 0, 8);
 
 name = "bat";
-const batAnimation: SimpleAnimations = {
-  Walk: getTextureArray(name, 0, 10),
-}
+const batAnimation = getTextureArray(name, 0, 10);
+
 Player.animation = dazelAnimation;
 Slime.animation = slimeAnimation;
 Bat.animation = batAnimation;

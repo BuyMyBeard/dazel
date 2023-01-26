@@ -4,8 +4,6 @@ import { ColorOverlayFilter } from "@pixi/filter-color-overlay";
 
 export abstract class Character extends Entity {
   protected hp : number = 3;
-  protected animations : Animations | undefined;
-  protected simpleAnimations : SimpleAnimations | undefined;
   protected speed : number = 10;
   private readonly damageFilter = new ColorOverlayFilter(0xFF0000, 0);
   protected damaged : boolean = false;
@@ -25,10 +23,8 @@ export abstract class Character extends Entity {
     return (this.sprite as AnimatedSprite);
   }
 
-  constructor(animation : Array<Texture>, position : IPoint, 
-    animations : Animations | undefined = undefined, simpleAnimations : SimpleAnimations | undefined = undefined) {
+  constructor(animation : Array<Texture>, position : IPoint) {
     super(new AnimatedSprite(animation), position);
-    this.animations = animations;
   }
 
   protected init(scale : number = 4) { // to make more flexible
@@ -39,41 +35,7 @@ export abstract class Character extends Entity {
     this.sprite.filters = [this.damageFilter];
     this.filterInfo.ticker.add(this.updateFilter, this);
   }
-  protected updateAnimation()  {
-    if (this.animations == undefined)
-      return;
-    const directionalAnimation : DirectionalAnimation | null = this.animations[this.state];
-    if (directionalAnimation === null) {
-      console.log(`animation not valid \n state: ${this.state}  \n direction: ${this.direction}`);
-      return;
-    }
-    const textures : Array<Texture> | null = directionalAnimation[this.direction];
-    if (textures === null) {
-      console.log(`animation not valid \n state: ${this.state}  \n direction: ${this.direction}`);
-      return;
-    }
-    this.animatedSprite.textures = textures;
-    if (this.state == "Attack") {
-      this.animatedSprite.loop = false;
-      this.animatedSprite.onComplete = this.onAttackEnd.bind(this);
-    }
-    this.animatedSprite.play();
 
-  }
-  protected Attack() {
-    this.state = "Attack";
-    this.updateAnimation();
-  }
-
-  protected onAttackEnd() {
-    this.state = "Idle";
-    this.animatedSprite.loop = true;
-    this.animatedSprite.onComplete = undefined;
-    this.updateAnimation();
-  }
-  public static isSimpleAnimations(animations : Animations | SimpleAnimations) {
-    return (Object.keys(animations).length < 4);
-  }
 
   public takeDamage() {
     if (this.damaged) {
@@ -97,22 +59,6 @@ export abstract class Character extends Entity {
   }
 }
 
-export type Animations = {
-  Walk: DirectionalAnimation,
-  Attack: DirectionalAnimation,
-  Idle: DirectionalAnimation,
-  None: null,
-};
 
-export type SimpleAnimations = {
-  Walk: Array<Texture>
-}
 
-export type DirectionalAnimation = {
-  Up: Array<Texture>,
-  Down: Array<Texture>,
-  Left: Array<Texture>,
-  Right: Array<Texture>,
-  None: null,
-};
 

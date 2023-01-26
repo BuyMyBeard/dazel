@@ -1,5 +1,5 @@
-import { Character, Animations } from "./Character";
-import { Application, DisplayObject, Graphics, IPoint, Ticker } from "pixi.js";
+import { Character } from "./Character";
+import { Application, DisplayObject, Graphics, IPoint, Texture, Ticker } from "pixi.js";
 import { CardinalDirection, Map } from "./Map";
 import { Direction, Entity } from "./Entity";
 import * as C from "./Constants";
@@ -7,7 +7,7 @@ import { Vect2D } from "./Vect2D";
 import { InputReader } from "./InputReader";
 
 export class Player extends Character {
-  public static animation : Animations;
+  public static animation : PlayerAnimation;
   private attackFramesTicker: Ticker = new Ticker();
 
   changeMap(cardinalDirection: CardinalDirection) {
@@ -37,7 +37,7 @@ export class Player extends Character {
     if (Player.animation == undefined) {
       throw "animation not initialized";
     }
-    super(Player.animation.Idle.Down, position, Player.animation)
+    super(Player.animation.Idle.Down, position)
     this.init();
     this.sprite.anchor.set(0.5, 0.9);
     this.attackFramesTicker.add(this.checkAttackRange, this);
@@ -97,10 +97,6 @@ export class Player extends Character {
     this.move(movement);
   }
 
-  protected override Attack(): void {
-    super.Attack();
-    this.attackFramesTicker.start();
-  }
   private checkAttackRange() { //callback
     const currentFrame = this.animatedSprite.currentFrame;
     if (currentFrame == 0) {
@@ -131,5 +127,53 @@ export class Player extends Character {
       }
     }
   }
+  protected updateAnimation() {
+    if (Player.animation == undefined)
+      return;
+    const directionalAnimation : DirectionalAnimation | null = Player.animation[this.state];
+    if (directionalAnimation === null) {
+      console.log(`animation not valid \n state: ${this.state}  \n direction: ${this.direction}`);
+      return;
+    }
+    const textures : Array<Texture> | null = directionalAnimation[this.direction];
+    if (textures === null) {
+      console.log(`animation not valid \n state: ${this.state}  \n direction: ${this.direction}`);
+      return;
+    }
+    this.animatedSprite.textures = textures;
+    if (this.state == "Attack") {
+      this.animatedSprite.loop = false;
+      this.animatedSprite.onComplete = this.onAttackEnd.bind(this);
+    }
+    this.animatedSprite.play();
+
+  }
+  protected Attack() {
+    this.state = "Attack";
+    this.updateAnimation();
+    this.attackFramesTicker.start();
+  }
+
+  protected onAttackEnd() {
+    this.state = "Idle";
+    this.animatedSprite.loop = true;
+    this.animatedSprite.onComplete = undefined;
+    this.updateAnimation();
+  }
 }
 
+
+export type DirectionalAnimation = {
+  Up: Array<Texture>,
+  Down: Array<Texture>,
+  Left: Array<Texture>,
+  Right: Array<Texture>,
+  None: null,
+};
+
+export type PlayerAnimation = {
+  Walk: DirectionalAnimation,
+  Attack: DirectionalAnimation,
+  Idle: DirectionalAnimation,
+  None: null,
+};

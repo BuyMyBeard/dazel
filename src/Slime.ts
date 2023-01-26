@@ -1,18 +1,17 @@
-import { IPoint, Application, Graphics } from "pixi.js";
-import { Character, SimpleAnimations } from "./Character"
+import { IPoint, Texture, Graphics } from "pixi.js";
+import { Character } from "./Character"
 import { Direction, Entity } from "./Entity";
 import { Vect2D } from "./Vect2D";
-import * as C from "./Constants";
 
 export class Slime extends Character {
-  public static animation : SimpleAnimations;
+  public static animation : Array<Texture>;
   private static readonly SPEED = 1;
   private static readonly HP = 3;
   public constructor(position : IPoint, initialDirection : Direction) {
     if (Slime.animation == undefined) {
       throw "animation not initialized";
     }
-    super(Slime.animation.Walk, position, undefined, Slime.animation);
+    super(Slime.animation, position);
     this.init();
     this.sprite.anchor.set(0.5, 0.5);
     this.filterInfo.loops = 1;
