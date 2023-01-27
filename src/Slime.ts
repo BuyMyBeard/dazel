@@ -2,6 +2,7 @@ import { IPoint, Texture, Graphics } from "pixi.js";
 import { Character } from "./Character"
 import { Direction, Entity } from "./Entity";
 import { Vect2D } from "./Vect2D";
+import { Map } from "./Map";
 
 export class Slime extends Character {
   public static animation : Array<Texture>;
@@ -20,6 +21,7 @@ export class Slime extends Character {
     this.hp = Slime.HP;
     this.direction = initialDirection;
     this.state = "Walk";
+    this.subscribe(Map.CurrentMap);
   }
 
   public update(): void {

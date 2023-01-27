@@ -125,7 +125,6 @@ Promise.all(loadMapAssets).then(() => {
 
   Object.values(maps).forEach((map: Map) => {
     dazel.subscribe(map);
-    slime1.subscribe(map);
   });
 
   slime1.moveToTop();

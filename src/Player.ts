@@ -11,7 +11,7 @@ export class Player extends Character {
   private attackFramesTicker: Ticker = new Ticker();
 
   changeMap(cardinalDirection: CardinalDirection) {
-    Entity.pool = [];
+    Entity.pool = []; //to modify
     Entity.pool.push(this);
     this.moveToTop();
     switch (cardinalDirection) {

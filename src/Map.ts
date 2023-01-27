@@ -3,6 +3,7 @@ import { Bat } from "./Bat";
 import * as C from "./Constants";
 import { Entity } from "./Entity";
 import { Player } from "./Player";
+import { Slime } from "./Slime";
 import { Vect2D } from "./Vect2D";
 
 export type CardinalDirection = "North" | "South" | "East" | "West";
@@ -31,6 +32,7 @@ export class Map implements IPositionWatcher {
   public South: Map | null = null;
   public East: Map | null = null;
   public West: Map | null = null;
+  public Cave: Map | null = null;
 
   /**
    * 
@@ -92,8 +94,7 @@ export class Map implements IPositionWatcher {
   }
   private loadNext(map: Map | undefined) {
     if (map === undefined) {
-      //throw "map not defined";
-      return;
+      throw "map not defined";
     }
     this.active = false;
     Map.app.stage.removeChildren();
@@ -149,7 +150,31 @@ export class Map implements IPositionWatcher {
   }
   private populate() {
     switch (this.id) {
-      
+      case 1:
+        break;
+
+      case 2:
+        const slime1 = new Slime(new Vect2D(250, 200), "Down");
+        const bat1 = new Bat(new Vect2D(400, 300));
+        break;
+
+      case 3:
+        break;
+
+      case 4:
+        break;
+
+      case 5:
+        break;
+
+      case 6:
+        break;
+
+      case 7:
+        break;
+
+      case 8:
+        break;
     }
   }
 
